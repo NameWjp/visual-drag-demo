@@ -18,5 +18,7 @@ module.exports = {
     'import/prefer-default-export': 0,
     'import/extensions': 0,
     'no-new': 0,
+    'prefer-destructuring': 0,
+    'no-plusplus': 0
   },
 };
