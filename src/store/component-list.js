@@ -9,7 +9,7 @@ export const commonAttr = {
 const list = [
   {
     label: '文字',
-    icon: 'wenben',
+    icon: 'text',
   },
 ];
 

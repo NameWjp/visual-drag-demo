@@ -6,7 +6,7 @@
       class="list"
       draggable
     >
-      <span class="iconfont" :class="'icon-' + item.icon"></span>
+      <svg-icon :iconClass="item.icon"></svg-icon>
       <span>{{ item.label }}</span>
     </div>
   </div>

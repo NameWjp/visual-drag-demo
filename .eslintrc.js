@@ -19,6 +19,7 @@ module.exports = {
     'import/extensions': 0,
     'no-new': 0,
     'prefer-destructuring': 0,
-    'no-plusplus': 0
+    'no-plusplus': 0,
+    'arrow-parens': 0
   },
 };
