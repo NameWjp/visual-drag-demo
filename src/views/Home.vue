@@ -8,8 +8,12 @@
       </section>
       <!-- 中间画布 -->
       <section class="center">
-        <div class="content">
-          <!-- <editor /> -->
+        <div
+          class="content"
+          @dragover.prevent
+          @drop.prevent="handleDrop"
+        >
+          <editor />
         </div>
       </section>
       <!-- 右侧属性列表 -->
@@ -33,16 +37,30 @@
 <script>
 import Toolbar from '@/views/Toolbar';
 import ComponentList from '@/views/ComponentList';
+import componentList from '@/store/component-list';
+import { cloneDeep } from 'lodash-es';
+import generateID from '@/utils/generateID';
+import Editor from '@/views/Editor';
 
 export default {
   components: {
     Toolbar,
     ComponentList,
+    Editor,
   },
   data() {
     return {
       activeName: 'attr',
     };
+  },
+  methods: {
+    handleDrop(e) {
+      const component = cloneDeep(componentList[e.dataTransfer.getData('index')]);
+      component.style.left = e.offsetX;
+      component.style.top = e.offsetY;
+      component.id = generateID();
+      this.$store.commit('addComponent', { component });
+    },
   },
 };
 </script>

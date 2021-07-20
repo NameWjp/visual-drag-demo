@@ -1,7 +1,7 @@
 <template>
   <div class="toolbar">
     <el-button>撤消</el-button>
-    <el-button>重做</el-button>
+    <el-button>恢复</el-button>
     <label for="input" class="el-button el-button--default el-button--small">
       <span>插入图片</span>
     </label>

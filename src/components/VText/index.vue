@@ -1,14 +1,25 @@
 <template>
- <div>
-   v-text 组件
- </div>
+  <div class="v-text">
+    <div v-html="element.propValue"></div>
+  </div>
 </template>
 
 <script>
 
 export default {
+  props: {
+    propValue: {
+      type: String,
+      require: true,
+    },
+    element: {
+      type: Object,
+    },
+  },
   data() {
-    return {};
+    return {
+      canEdit: false,
+    };
   },
   methods: {
   },
