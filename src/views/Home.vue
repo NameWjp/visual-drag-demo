@@ -55,11 +55,14 @@ export default {
   },
   methods: {
     handleDrop(e) {
-      const component = cloneDeep(componentList[e.dataTransfer.getData('index')]);
-      component.style.left = e.offsetX;
-      component.style.top = e.offsetY;
-      component.id = generateID();
-      this.$store.commit('addComponent', { component });
+      const index = e.dataTransfer.getData('index');
+      if (index) {
+        const component = cloneDeep(componentList[index]);
+        component.style.left = e.offsetX;
+        component.style.top = e.offsetY;
+        component.id = generateID();
+        this.$store.commit('component/addComponent', { component });
+      }
     },
   },
 };

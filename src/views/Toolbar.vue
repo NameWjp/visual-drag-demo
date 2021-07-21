@@ -14,24 +14,38 @@
     <el-button>解锁</el-button>
     <div class="canvas-config">
       <span>画布大小</span>
-      <input />
+      <input :value="canvasStyle.width" @input="e => setCanvasStyle('width', e.target.value)" />
       <span>*</span>
-      <input />
+      <input :value="canvasStyle.height" @input="e => setCanvasStyle('height', e.target.value)" />
     </div>
     <div class="canvas-config">
       <span>画布比例</span>
-      <input /> %
+      <input :value="canvasStyle.scale" @input="e => setCanvasStyle('scale', e.target.value)"/> %
     </div>
   </div>
   <input type="file" id="input" hidden />
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 export default {
   data() {
     return {};
   },
-  methods: {},
+  computed: {
+    ...mapState('canvas', [
+      'canvasStyle',
+    ]),
+  },
+  methods: {
+    setCanvasStyle(key, value) {
+      this.$store.commit('canvas/setCanvasStyle', {
+        ...this.canvasStyle,
+        [key]: Number(value),
+      });
+    },
+  },
   components: {},
 };
 </script>

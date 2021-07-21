@@ -20,6 +20,7 @@ module.exports = {
     'no-new': 0,
     'prefer-destructuring': 0,
     'no-plusplus': 0,
-    'arrow-parens': 0
+    'arrow-parens': 0,
+    'no-shadow': 0
   },
 };

@@ -1,7 +1,7 @@
 <template>
   <div class="editor">
     <component
-      v-for="item in componentData"
+      v-for="item in componentList"
       class="component"
       :is="item.component"
       :propValue="item.propValue"
@@ -23,18 +23,16 @@ export default {
     return {};
   },
   computed: {
-    ...mapState([
-      'componentData',
+    ...mapState('component', [
+      'componentList',
     ]),
   },
   methods: {
     getShapeStyle(style) {
       const filter = Object.keys(style).filter(key => !shapeStyle.includes(key));
-      console.log(getStyle(style, filter));
       return getStyle(style, filter);
     },
     getComponentStyle(style) {
-      console.log(getStyle(style, shapeStyle));
       return getStyle(style, shapeStyle);
     },
   },
@@ -47,5 +45,9 @@ export default {
   position: relative;
   background: #fff;
   margin: auto;
+  .component {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>
