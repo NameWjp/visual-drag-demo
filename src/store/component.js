@@ -15,6 +15,10 @@ const getters = {
 };
 
 const mutations = {
+  setComponentList(state, list) {
+    state.componentList = list;
+    console.log(state.componentList);
+  },
   addComponent(state, { component, index }) {
     if (isDef(index)) {
       state.componentList.splice(index, 0, component);

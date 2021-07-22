@@ -21,6 +21,8 @@ module.exports = {
     'prefer-destructuring': 0,
     'no-plusplus': 0,
     'arrow-parens': 0,
-    'no-shadow': 0
+    'no-shadow': 0,
+    'no-mixed-operators': 0,
+    'no-param-reassign': 0
   },
 };

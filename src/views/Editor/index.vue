@@ -1,20 +1,38 @@
 <template>
-  <div class="editor">
-    <component
-      v-for="item in componentList"
-      class="component"
-      :is="item.component"
-      :propValue="item.propValue"
-      :element="item"
-      :style="getComponentStyle(item.style)"
+  <div
+    class="editor"
+    :style="{
+      width: `${changeStyleWithScale(canvasStyle.width)}px`,
+      height: `${changeStyleWithScale(canvasStyle.height)}px`
+    }"
+  >
+    <!-- 网格图案 -->
+    <grid />
+
+    <!-- 编辑组件 -->
+    <shape
+      v-for="(item, index) in componentList"
       :key="item.id"
-    />
+      :style="getShapeStyle(item.style)"
+      :active="index === curComponentIndex"
+    >
+      <component
+        class="component"
+        :is="item.component"
+        :propValue="item.propValue"
+        :element="item"
+        :style="getComponentStyle(item.style)"
+      />
+    </shape>
   </div>
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { getStyle } from '@/utils/style';
+import { changeStyleWithScale } from '@/utils/translate';
+import Shape from './Shape';
+import Grid from './Grid';
 
 const shapeStyle = ['width', 'height', 'top', 'left', 'rotate'];
 
@@ -25,9 +43,15 @@ export default {
   computed: {
     ...mapState('component', [
       'componentList',
+      'curComponentIndex',
+    ]),
+    ...mapState('canvas', [
+      'canvasStyle',
     ]),
   },
   methods: {
+    changeStyleWithScale,
+
     getShapeStyle(style) {
       const filter = Object.keys(style).filter(key => !shapeStyle.includes(key));
       return getStyle(style, filter);
@@ -36,7 +60,10 @@ export default {
       return getStyle(style, shapeStyle);
     },
   },
-  components: {},
+  components: {
+    Shape,
+    Grid,
+  },
 };
 </script>
 

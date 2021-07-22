@@ -20,7 +20,7 @@
     </div>
     <div class="canvas-config">
       <span>画布比例</span>
-      <input :value="canvasStyle.scale" @input="e => setCanvasStyle('scale', e.target.value)"/> %
+      <input :value="canvasStyle.scale" @input="handleScaleChange"/> %
     </div>
   </div>
   <input type="file" id="input" hidden />
@@ -28,6 +28,9 @@
 
 <script>
 import { mapState } from 'vuex';
+import { debounce, cloneDeep } from 'lodash-es';
+
+const needChangeStyle = ['top', 'left', 'width', 'height', 'fontSize', 'borderWidth'];
 
 export default {
   data() {
@@ -37,6 +40,9 @@ export default {
     ...mapState('canvas', [
       'canvasStyle',
     ]),
+    ...mapState('component', [
+      'componentList',
+    ]),
   },
   methods: {
     setCanvasStyle(key, value) {
@@ -45,6 +51,31 @@ export default {
         [key]: Number(value),
       });
     },
+    format(value, scale) {
+      return value * (scale / 100);
+    },
+    getOriginStyle(value) {
+      const scale = this.canvasStyle.scale;
+      return value / (scale / 100);
+    },
+    handleScaleChange: debounce(function handleScaleChange(e) {
+      const scale = parseInt(e.target.value, 10) || 1;
+
+      const componentList = cloneDeep(this.componentList);
+      componentList.forEach(component => {
+        Object.keys(component.style).forEach(key => {
+          if (needChangeStyle.includes(key)) {
+            // 不能用 Math.round 防止 1 px 的边框变 0
+            component.style[key] = Math.ceil(
+              this.format(this.getOriginStyle(component.style[key]), scale),
+            );
+          }
+        });
+      });
+
+      this.setCanvasStyle('scale', scale);
+      this.$store.commit('component/setComponentList', componentList);
+    }, 1000),
   },
   components: {},
 };
