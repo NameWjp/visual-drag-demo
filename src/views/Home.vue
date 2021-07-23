@@ -10,7 +10,7 @@
       <section class="center">
         <div
           class="content"
-          @dragover.prevent
+          @dragover="handleDragover"
           @drop.prevent="handleDrop"
         >
           <editor />
@@ -41,6 +41,7 @@ import componentList from '@/store/component-list';
 import { cloneDeep } from 'lodash-es';
 import generateID from '@/utils/generateID';
 import Editor from '@/views/Editor';
+import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -53,16 +54,23 @@ export default {
       activeName: 'attr',
     };
   },
+  computed: {
+    ...mapState('drag', [
+      'dragElement',
+    ]),
+  },
   methods: {
-    handleDrop(e) {
-      const index = e.dataTransfer.getData('index');
-      if (index) {
-        const component = cloneDeep(componentList[index]);
-        component.style.left = e.offsetX;
-        component.style.top = e.offsetY;
-        component.id = generateID();
-        this.$store.commit('component/addComponent', { component });
+    handleDragover(e) {
+      if (this.dragElement) {
+        e.preventDefault();
       }
+    },
+    handleDrop(e) {
+      const component = cloneDeep(componentList[this.dragElement.dataset.index]);
+      component.style.left = e.offsetX;
+      component.style.top = e.offsetY;
+      component.id = generateID();
+      this.$store.commit('component/addComponent', { component });
     },
   },
 };

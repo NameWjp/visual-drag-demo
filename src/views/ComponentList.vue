@@ -6,7 +6,7 @@
       :data-index="index"
       class="item"
       draggable="true"
-      @dragstart="handleDrageStart"
+      @dragstart="handleDragStart"
     >
       <svg-icon class="icon" :iconClass="item.icon"></svg-icon>
       <span class="text">{{ item.label }}</span>
@@ -23,9 +23,14 @@ export default {
       componentList,
     };
   },
+  created() {
+    window.ondragend = () => {
+      this.$store.commit('drag/setDragElement', null);
+    };
+  },
   methods: {
-    handleDrageStart(e) {
-      e.dataTransfer.setData('index', e.target.dataset.index);
+    handleDragStart(e) {
+      this.$store.commit('drag/setDragElement', e.target);
     },
   },
   components: {},
