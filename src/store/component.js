@@ -17,7 +17,9 @@ const getters = {
 const mutations = {
   setComponentList(state, list) {
     state.componentList = list;
-    console.log(state.componentList);
+  },
+  setCurComponentIndex(state, index) {
+    state.curComponentIndex = index;
   },
   addComponent(state, { component, index }) {
     if (isDef(index)) {

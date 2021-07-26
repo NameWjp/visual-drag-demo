@@ -93,11 +93,11 @@ export default {
 
 <style scoped lang="scss">
 .v-text {
+  line-height: 1.4;
   div {
     outline: none;
     width: 100%;
     height: 100%;
-    background: red;
   }
 }
 </style>
