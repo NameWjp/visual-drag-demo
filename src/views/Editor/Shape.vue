@@ -2,7 +2,7 @@
   <div
     class="shape"
     :class="{ active }"
-    @mousedown.stop
+    @mousedown.stop="handleMouseDownOnShape"
   >
     <div
       class="shape-point"
@@ -16,12 +16,20 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex';
+import { throttle } from 'lodash-es';
+
+const notPreventDefaultComponents = ['v-text'];
 
 export default {
   props: {
-    active: {
-      type: Boolean,
-      default: false,
+    index: {
+      require: true,
+      type: Number,
+    },
+    element: {
+      require: true,
+      type: Object,
     },
     defaultStyle: {
       require: true,
@@ -33,7 +41,53 @@ export default {
       pointList: ['lt', 't', 'rt', 'r', 'rb', 'b', 'bl', 'l'], // 八个方向
     };
   },
+  computed: {
+    ...mapState('component', [
+      'curComponentIndex',
+    ]),
+    ...mapGetters('component', [
+      'curComponent',
+    ]),
+    active() {
+      return this.index === this.curComponentIndex;
+    },
+  },
   methods: {
+    handleMouseDownOnShape(e) {
+      // // 文字类型的不能阻止默认行为
+      if (!notPreventDefaultComponents.includes(this.element.component)) {
+        e.preventDefault();
+      }
+      this.selectCurComponent();
+      this.dragCurComponent(e);
+    },
+    dragCurComponent(e) {
+      const pos = { ...this.defaultStyle };
+      const startX = e.clientX;
+      const startY = e.clientY;
+      const left = pos.left;
+      const top = pos.top;
+
+      const move = throttle((mouseEvent) => {
+        const curX = mouseEvent.clientX;
+        const curY = mouseEvent.clientY;
+        pos.left = curX - startX + left;
+        pos.top = curY - startY + top;
+
+        this.$store.dispatch('component/setCurComponentStyle', pos);
+      }, 20);
+
+      const up = () => {
+        document.removeEventListener('mousemove', move);
+        document.removeEventListener('mouseup', up);
+      };
+
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', up);
+    },
+    selectCurComponent() {
+      this.$store.commit('component/setCurComponentIndex', this.index);
+    },
     getPointStyle(point) {
       const { width, height } = this.defaultStyle;
       const hasT = /t/.test(point);

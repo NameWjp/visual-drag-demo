@@ -2,11 +2,12 @@
   <div class="v-text">
     <div
       ref="text"
+      :class="{ canEdit }"
       :contenteditable="canEdit"
       @dblclick="handleDBClick"
+      @mousedown="handleMousedown"
       @blur="handleBlur"
       @input="handleInput"
-      @paste.prevent="clearStyle"
     />
   </div>
 </template>
@@ -29,32 +30,40 @@ export default {
     };
   },
   methods: {
-    clearStyle(e) {
-      const clp = e.clipboardData;
-      const text = clp.getData('text/plain') || '';
-      if (text) {
-        const dom = this.$refs.text;
-        dom.append(text);
-        // 移动光标到末尾
-        const selection = window.getSelection();
-        selection.removeAllRanges();
-        selection.selectAllChildren(dom);
-        selection.collapseToEnd();
-        // 重新调整大小
-        this.$emit('input', this.element, e.target.innerHTML);
+    handleMousedown(e) {
+      if (this.canEdit) {
+        e.stopPropagation();
       }
     },
     handleInput(e) {
-      this.$emit('input', this.element, e.target.innerHTML);
+      const propValue = e.target.innerHTML;
+      e.target.style.height = 'auto';
+      this.$nextTick(() => {
+        let height = e.target.offsetHeight;
+        e.target.style.height = '';
+        if (height < this.element.style.height) {
+          height = this.element.style.height;
+        }
+        this.changeComponent(propValue, height);
+      });
     },
     handleBlur(e) {
       this.canEdit = false;
+      const propValue = e.target.innerHTML;
+      if (!propValue) {
+        this.changeComponent('&nbsp;');
+      }
+    },
+    changeComponent(value, height) {
+      const newComponent = { ...this.element };
+      newComponent.propValue = value;
+      if (height) {
+        newComponent.style.height = height;
+      }
+
       this.$store.commit('component/changeComponent', {
         component: this.element,
-        newComponent: {
-          ...this.element,
-          propValue: e.target.innerHTML || '&nbsp;',
-        },
+        newComponent,
       });
     },
     handleDBClick() {
@@ -93,7 +102,9 @@ export default {
 
 <style scoped lang="scss">
 .v-text {
-  line-height: 1.4;
+  .canEdit {
+    cursor: text;
+  }
   div {
     outline: none;
     width: 100%;

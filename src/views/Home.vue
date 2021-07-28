@@ -8,11 +8,7 @@
       </section>
       <!-- 中间画布 -->
       <section class="center">
-        <div
-          class="content"
-          @dragover="handleDragover"
-          @drop.prevent="handleDrop"
-        >
+        <div class="content">
           <editor />
         </div>
       </section>
@@ -37,11 +33,7 @@
 <script>
 import Toolbar from '@/views/Toolbar';
 import ComponentList from '@/views/ComponentList';
-import componentList from '@/store/component-list';
-import { cloneDeep } from 'lodash-es';
-import generateID from '@/utils/generateID';
 import Editor from '@/views/Editor';
-import { mapState } from 'vuex';
 
 export default {
   components: {
@@ -54,25 +46,8 @@ export default {
       activeName: 'attr',
     };
   },
-  computed: {
-    ...mapState('drag', [
-      'dragElement',
-    ]),
-  },
-  methods: {
-    handleDragover(e) {
-      if (this.dragElement) {
-        e.preventDefault();
-      }
-    },
-    handleDrop(e) {
-      const component = cloneDeep(componentList[this.dragElement.dataset.index]);
-      component.style.left = e.offsetX;
-      component.style.top = e.offsetY;
-      component.id = generateID();
-      this.$store.commit('component/addComponent', { component });
-    },
-  },
+  computed: {},
+  methods: {},
 };
 </script>
 
@@ -104,7 +79,6 @@ export default {
       margin-right: 262px;
       background: #f5f5f5;
       height: 100%;
-      overflow: auto;
       padding: 20px;
       box-sizing: border-box;
       .content {

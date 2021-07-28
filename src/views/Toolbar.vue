@@ -28,7 +28,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { debounce, cloneDeep } from 'lodash-es';
+import { debounce } from 'lodash-es';
 
 const needChangeStyle = ['top', 'left', 'width', 'height', 'fontSize', 'borderWidth'];
 
@@ -61,7 +61,7 @@ export default {
     handleScaleChange: debounce(function handleScaleChange(e) {
       const scale = parseInt(e.target.value, 10) || 1;
 
-      const componentList = cloneDeep(this.componentList);
+      const componentList = [...this.componentList];
       componentList.forEach(component => {
         Object.keys(component.style).forEach(key => {
           if (needChangeStyle.includes(key)) {

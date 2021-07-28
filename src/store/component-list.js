@@ -19,7 +19,7 @@ const list = [
       height: 22,
       fontSize: 14,
       fontWeight: 500,
-      lineHeight: '',
+      lineHeight: 1.5,
       letterSpacing: 0,
       textAlign: '',
       color: '',

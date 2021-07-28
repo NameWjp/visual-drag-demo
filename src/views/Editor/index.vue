@@ -1,6 +1,8 @@
 <template>
   <div
-    @mousedown="clearCurComponent"
+    @mousedown="deselectCurComponent"
+    @dragover="handleDragover"
+    @drop.prevent="handleDrop"
     class="editor"
     :style="{
       width: `${changeStyleWithScale(canvasStyle.width)}px`,
@@ -16,8 +18,8 @@
       :key="item.id"
       :style="getShapeStyle(item.style)"
       :defaultStyle="item.style"
-      :active="index === curComponentIndex"
-      @click="selectCurComponent(index)"
+      :index="index"
+      :element="item"
     >
       <component
         class="component"
@@ -34,8 +36,11 @@
 import { mapState } from 'vuex';
 import { getStyle } from '@/utils/style';
 import { changeStyleWithScale } from '@/utils/translate';
-import Shape from './Shape';
+import componentList from '@/store/component-list';
+import { cloneDeep } from 'lodash-es';
+import generateID from '@/utils/generateID';
 import Grid from './Grid';
+import Shape from './Shape';
 
 const shapeStyle = ['width', 'height', 'top', 'left', 'rotate'];
 
@@ -46,19 +51,18 @@ export default {
   computed: {
     ...mapState('component', [
       'componentList',
-      'curComponentIndex',
     ]),
     ...mapState('canvas', [
       'canvasStyle',
     ]),
+    ...mapState('drag', [
+      'dragElement',
+    ]),
   },
   methods: {
     changeStyleWithScale,
-    clearCurComponent() {
+    deselectCurComponent() {
       this.$store.commit('component/setCurComponentIndex', null);
-    },
-    selectCurComponent(index) {
-      this.$store.commit('component/setCurComponentIndex', index);
     },
     getShapeStyle(style) {
       const filter = Object.keys(style).filter(key => !shapeStyle.includes(key));
@@ -66,6 +70,18 @@ export default {
     },
     getComponentStyle(style) {
       return getStyle(style, shapeStyle);
+    },
+    handleDragover(e) {
+      if (this.dragElement) {
+        e.preventDefault();
+      }
+    },
+    handleDrop(e) {
+      const component = cloneDeep(componentList[this.dragElement.dataset.index]);
+      component.style.left = e.offsetX;
+      component.style.top = e.offsetY;
+      component.id = generateID();
+      this.$store.commit('component/addComponent', { component });
     },
   },
   components: {
@@ -80,6 +96,7 @@ export default {
   position: relative;
   background: #fff;
   margin: auto;
+  overflow: hidden;
   .component {
     width: 100%;
     height: 100%;

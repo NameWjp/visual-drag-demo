@@ -36,7 +36,26 @@ const mutations = {
   },
 };
 
-const actions = {};
+const actions = {
+  setCurComponentStyle({ getters, commit }, {
+    top, left, width, height, rotate,
+  }) {
+    if (getters.curComponent) {
+      const curComponent = { ...getters.curComponent };
+
+      if (top) curComponent.style.top = top;
+      if (left) curComponent.style.left = left;
+      if (width) curComponent.style.width = width;
+      if (height) curComponent.style.height = height;
+      if (rotate) curComponent.style.rotate = rotate;
+
+      commit('changeComponent', {
+        component: getters.curComponent,
+        newComponent: curComponent,
+      });
+    }
+  },
+};
 
 export default {
   namespaced: true,
