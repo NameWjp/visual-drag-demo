@@ -8,7 +8,7 @@
       draggable="true"
       @dragstart="handleDragStart"
     >
-      <svg-icon class="icon" :iconClass="item.icon"></svg-icon>
+      <svg-icon class="icon" :iconClass="item.icon" />
       <span class="text">{{ item.label }}</span>
     </div>
   </div>
@@ -58,7 +58,7 @@ export default {
     align-items: center;
     justify-content: center;
     .icon {
-      font-size:20px;
+      font-size: 18px;
       margin-right: 4px;
     }
   }

@@ -4,6 +4,7 @@ const state = {
     height: 740,
     scale: 100,
   },
+  canvasEl: null,
 };
 
 const getters = {};
@@ -11,6 +12,9 @@ const getters = {};
 const mutations = {
   setCanvasStyle(state, style) {
     state.canvasStyle = style;
+  },
+  setCanvasEl(state, el) {
+    state.canvasEl = el;
   },
 };
 

@@ -3,6 +3,7 @@
     @mousedown="deselectCurComponent"
     @dragover="handleDragover"
     @drop.prevent="handleDrop"
+    ref="editor"
     class="editor"
     :style="{
       width: `${changeStyleWithScale(canvasStyle.width)}px`,
@@ -35,7 +36,6 @@
 <script>
 import { mapState } from 'vuex';
 import { getStyle } from '@/utils/style';
-import { changeStyleWithScale } from '@/utils/translate';
 import componentList from '@/store/component-list';
 import { cloneDeep } from 'lodash-es';
 import generateID from '@/utils/generateID';
@@ -59,8 +59,13 @@ export default {
       'dragElement',
     ]),
   },
+  mounted() {
+    this.$store.commit('canvas/setCanvasEl', this.$refs.editor);
+  },
   methods: {
-    changeStyleWithScale,
+    changeStyleWithScale(value) {
+      return value * parseInt(this.canvasStyle.scale, 10) / 100;
+    },
     deselectCurComponent() {
       this.$store.commit('component/setCurComponentIndex', null);
     },

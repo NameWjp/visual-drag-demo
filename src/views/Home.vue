@@ -16,7 +16,8 @@
       <section class="right">
         <el-tabs type="card" v-model="activeName">
           <el-tab-pane label="属性" name="attr">
-            <p class="placeholder">请选择组件</p>
+            <attr-list v-if="curComponent" />
+            <p v-else class="placeholder">请选择组件</p>
           </el-tab-pane>
           <el-tab-pane label="动画" name="animation">
             <p class="placeholder">请选择组件</p>
@@ -34,19 +35,26 @@
 import Toolbar from '@/views/Toolbar';
 import ComponentList from '@/views/ComponentList';
 import Editor from '@/views/Editor';
+import AttrList from '@/views/AttrList';
+import { mapGetters } from 'vuex';
 
 export default {
   components: {
     Toolbar,
     ComponentList,
     Editor,
+    AttrList,
   },
   data() {
     return {
       activeName: 'attr',
     };
   },
-  computed: {},
+  computed: {
+    ...mapGetters('component', [
+      'curComponent',
+    ]),
+  },
   methods: {},
 };
 </script>

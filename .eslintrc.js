@@ -11,7 +11,7 @@ module.exports = {
     parser: 'babel-eslint',
   },
   rules: {
-    'import/no-extraneous-dependencies': ['error', { devDependencies: true }],
+    'import/no-extraneous-dependencies': [2, { devDependencies: true }],
     'no-console': 1,
     'no-unused-vars': 1,
     'max-len': 0,
@@ -24,6 +24,8 @@ module.exports = {
     'no-shadow': 0,
     'no-mixed-operators': 0,
     'no-param-reassign': 0,
-    'prefer-template': 0
+    'prefer-template': 0,
+    'object-curly-newline': 0,
+    'no-constant-condition': [2, { checkLoops: false }]
   },
 };

@@ -14,9 +14,9 @@
     <el-button>解锁</el-button>
     <div class="canvas-config">
       <span>画布大小</span>
-      <input :value="canvasStyle.width" @input="e => setCanvasStyle('width', e.target.value)" />
+      <input :value="canvasStyle.width" @input="setCanvasStyle('width', $event.target.value)" />
       <span>*</span>
-      <input :value="canvasStyle.height" @input="e => setCanvasStyle('height', e.target.value)" />
+      <input :value="canvasStyle.height" @input="setCanvasStyle('height', $event.target.value)" />
     </div>
     <div class="canvas-config">
       <span>画布比例</span>
