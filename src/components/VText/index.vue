@@ -13,6 +13,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 
 export default {
   props: {
@@ -29,6 +30,11 @@ export default {
       canEdit: false,
     };
   },
+  computed: {
+    ...mapGetters('component', [
+      'curComponent',
+    ]),
+  },
   methods: {
     handleMousedown(e) {
       if (this.canEdit) {
@@ -37,33 +43,31 @@ export default {
     },
     handleInput(e) {
       const propValue = e.target.innerHTML;
-      e.target.style.height = 'auto';
-      this.$nextTick(() => {
-        let height = e.target.offsetHeight;
-        e.target.style.height = '';
-        if (height < this.element.style.height) {
-          height = this.element.style.height;
-        }
-        this.changeComponent(propValue, height);
-      });
-    },
-    handleBlur(e) {
-      this.canEdit = false;
-      const propValue = e.target.innerHTML;
-      if (!propValue) {
-        this.changeComponent('&nbsp;');
-      }
-    },
-    changeComponent(value, height) {
       const newComponent = { ...this.element };
-      newComponent.propValue = value;
-      if (height) {
-        newComponent.style.height = height;
-      }
+      newComponent.propValue = propValue;
 
       this.$store.commit('component/changeComponent', {
         component: this.element,
         newComponent,
+      });
+
+      this.adjustTextHeight();
+    },
+    handleBlur() {
+      this.canEdit = false;
+    },
+    adjustTextHeight() {
+      const element = this.$refs.text;
+      element.style.height = 'auto';
+      let height = element.offsetHeight;
+      element.style.height = '';
+
+      if (height < this.element.style.height) {
+        height = this.element.style.height;
+      }
+
+      this.$store.dispatch('component/setCurComponentStyle', {
+        height,
       });
     },
     handleDBClick() {
@@ -91,6 +95,7 @@ export default {
           const text = dom.innerHTML;
           if (text !== this.element.propValue) {
             dom.innerHTML = this.element.propValue;
+            this.adjustTextHeight();
           }
         });
       },

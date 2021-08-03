@@ -133,8 +133,14 @@ export default {
     handleChangeStyle(key, val) {
       this.$store.dispatch('component/setCurComponentStyle', { [key]: val });
     },
-    handleChangeValue(val) {
-      // todo change val
+    handleChangeValue(propValue) {
+      const newComponent = { ...this.curComponent };
+      newComponent.propValue = propValue;
+
+      this.$store.commit('component/changeComponent', {
+        component: this.curComponent,
+        newComponent,
+      });
     },
   },
   components: {},
