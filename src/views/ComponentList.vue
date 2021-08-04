@@ -43,7 +43,7 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
   box-sizing: border-box;
-  padding: 10px;
+  padding: 10px 15px;
   .item {
     box-sizing: border-box;
     user-select: none;

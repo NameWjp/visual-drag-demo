@@ -8,6 +8,7 @@
       @mousedown="handleMousedown"
       @blur="handleBlur"
       @input="handleInput"
+      :style="{ verticalAlign: element.style.verticalAlign }"
     />
   </div>
 </template>
@@ -66,8 +67,12 @@ export default {
         height = this.element.style.height;
       }
 
-      this.$store.dispatch('component/setCurComponentStyle', {
-        height,
+      const newComponent = { ...this.element };
+      newComponent.style.height = height;
+
+      this.$store.commit('component/changeComponent', {
+        component: this.element,
+        newComponent,
       });
     },
     handleDBClick() {
@@ -107,13 +112,15 @@ export default {
 
 <style scoped lang="scss">
 .v-text {
+  display: table;
+  width: 100%;
+  height: 100%;
   .canEdit {
     cursor: text;
   }
   div {
+    display: table-cell;
     outline: none;
-    width: 100%;
-    height: 100%;
   }
 }
 </style>

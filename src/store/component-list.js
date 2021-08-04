@@ -25,6 +25,27 @@ const list = [
       color: '',
     },
   },
+  {
+    component: 'rect-shape',
+    label: '矩形',
+    propValue: '&nbsp;',
+    icon: 'juxing',
+    style: {
+      width: 200,
+      height: 200,
+      fontSize: 14,
+      fontWeight: 500,
+      lineHeight: '',
+      letterSpacing: 0,
+      textAlign: 'center',
+      color: '',
+      borderColor: '#000',
+      borderWidth: 1,
+      backgroundColor: '',
+      borderStyle: 'solid',
+      verticalAlign: 'middle',
+    },
+  },
 ];
 
 for (let i = 0; i < list.length; i++) {

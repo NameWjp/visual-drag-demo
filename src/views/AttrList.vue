@@ -34,6 +34,7 @@
       <el-form-item label="内容" v-if="showContentComponents.includes(curComponent.component)">
         <el-input
           type="textarea"
+          :autosize="{ minRows: 3 }"
           :model-value="curComponent.propValue"
           @update:modelValue="handleChangeValue"
         />
@@ -51,7 +52,7 @@ export default {
   data() {
     return {
       // 展示内容的组件
-      showContentComponents: ['v-text'],
+      showContentComponents: ['v-text', 'rect-shape'],
       // 颜色选择
       colorPickerKeys: ['borderColor', 'color', 'backgroundColor'],
       // 下拉选择框
@@ -150,5 +151,7 @@ export default {
 <style scoped lang="scss">
 .attr-list {
   padding: 20px;
+  height: 100%;
+  overflow: auto;
 }
 </style>
