@@ -2,9 +2,7 @@
   <div class="toolbar">
     <el-button>撤消</el-button>
     <el-button>恢复</el-button>
-    <label for="input" class="el-button el-button--default el-button--small">
-      <span>插入图片</span>
-    </label>
+    <label for="input" class="el-button el-button--default el-button--small">插入图片</label>
     <el-button>预览</el-button>
     <el-button>保存</el-button>
     <el-button>清空画布</el-button>
@@ -23,12 +21,14 @@
       <input :value="canvasStyle.scale" @input="handleScaleChange"/> %
     </div>
   </div>
-  <input type="file" id="input" hidden />
+  <input type="file" @change="handleFileChange" id="input" hidden />
 </template>
 
 <script>
 import { mapState } from 'vuex';
 import { debounce } from 'lodash-es';
+import { commonStyle, commonAttr } from '@/store/component-list';
+import generateID from '@/utils/generateID';
 
 const needChangeStyle = ['top', 'left', 'width', 'height', 'fontSize', 'borderWidth'];
 
@@ -76,6 +76,43 @@ export default {
       this.setCanvasStyle('scale', scale);
       this.$store.commit('component/setComponentList', componentList);
     }, 1000),
+    handleFileChange(e) {
+      const file = e.target.files[0];
+      if (!file.type.includes('image')) {
+        this.$message.error('只能插入图片');
+        return;
+      }
+
+      const reader = new FileReader();
+      reader.onload = (res) => {
+        const base64Url = res.target.result;
+
+        const img = new Image();
+        img.onload = () => {
+          this.$store.commit('component/addComponent', {
+            component: {
+              ...commonAttr,
+              id: generateID(),
+              component: 'picture',
+              label: '图片',
+              propValue: base64Url,
+              style: {
+                ...commonStyle,
+                left: 0,
+                top: 0,
+                borderRadius: '',
+                width: img.width,
+                height: img.height,
+              },
+            },
+          });
+        };
+
+        img.src = base64Url;
+      };
+
+      reader.readAsDataURL(file);
+    },
   },
   components: {},
 };

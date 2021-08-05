@@ -3,7 +3,7 @@
     ref="shape"
     class="shape"
     :class="{ active }"
-    @mousedown.stop="handleMouseDownOnShape"
+    @mousedown.stop.prevent="handleMouseDownOnShape"
   >
     <svg-icon
       v-show="active"

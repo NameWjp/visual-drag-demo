@@ -27,6 +27,7 @@ module.exports = {
     'prefer-template': 0,
     'object-curly-newline': 0,
     'no-constant-condition': [2, { checkLoops: false }],
-    'no-lonely-if': 0
+    'no-lonely-if': 0,
+    'global-require': 0
   },
 };

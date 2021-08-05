@@ -8,7 +8,7 @@
       draggable="true"
       @dragstart="handleDragStart"
     >
-      <svg-icon class="icon" :iconClass="item.icon" />
+      <svg-icon class="icon" :class="item.icon" :iconClass="item.icon" />
       <span class="text">{{ item.label }}</span>
     </div>
   </div>
@@ -60,6 +60,12 @@ export default {
     .icon {
       font-size: 18px;
       margin-right: 4px;
+      &.tupian {
+        font-size: 24px;
+      }
+      &.button {
+        font-size: 20px;
+      }
     }
   }
 }
