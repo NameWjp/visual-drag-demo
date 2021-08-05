@@ -76,6 +76,8 @@ export default {
       });
     },
     handleDBClick() {
+      if (this.element.isLock) return;
+
       this.canEdit = true;
       // 全选
       this.$nextTick(() => {

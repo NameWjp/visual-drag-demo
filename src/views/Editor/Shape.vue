@@ -2,7 +2,7 @@
   <div
     ref="shape"
     class="shape"
-    :class="{ active }"
+    :class="{ checked: isChecked, lock: element.isLock }"
     @mousedown.stop.prevent="handleMouseDownOnShape"
   >
     <svg-icon
@@ -10,6 +10,11 @@
       class="rotate"
       iconClass="rotate"
       @mousedown.stop="handleRotate"
+    />
+    <svg-icon
+      v-show="element.isLock"
+      class="lock"
+      iconClass="lock"
     />
     <div
       class="shape-point"
@@ -82,8 +87,11 @@ export default {
     ...mapGetters('component', [
       'curComponent',
     ]),
-    active() {
+    isChecked() {
       return this.index === this.curComponentIndex;
+    },
+    active() {
+      return this.isChecked && !this.element.isLock;
     },
   },
   methods: {
@@ -125,6 +133,9 @@ export default {
     },
     handleMouseDownOnShape(e) {
       this.selectCurComponent();
+
+      if (this.element.isLock) return;
+
       this.getCursor();
       this.dragCurComponent(e);
     },
@@ -290,7 +301,13 @@ export default {
   &:hover {
     cursor: move;
   }
-  &.active {
+  &.lock {
+    opacity: .5;
+  }
+  &.lock:hover {
+    cursor: not-allowed;
+  }
+  &.checked {
     outline: 1px solid #59c7f9;
     user-select: none;
   }
@@ -303,6 +320,12 @@ export default {
     font-size: 20px;
     color: #59c7f9;
     cursor: grab;
+  }
+
+  .lock {
+    position: absolute;
+    right: 0;
+    top: 0;
   }
 
   .shape-point {

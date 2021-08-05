@@ -8,8 +8,8 @@
     <el-button>清空画布</el-button>
     <el-button>组合</el-button>
     <el-button>拆分</el-button>
-    <el-button>锁定</el-button>
-    <el-button>解锁</el-button>
+    <el-button @click="handleLock" :disabled="!curComponent || curComponent.isLock">锁定</el-button>
+    <el-button @click="handleUnlock" :disabled="!curComponent || !curComponent.isLock">解锁</el-button>
     <div class="canvas-config">
       <span>画布大小</span>
       <input :value="canvasStyle.width" @input="setCanvasStyle('width', $event.target.value)" />
@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState, mapGetters } from 'vuex';
 import { debounce } from 'lodash-es';
 import { commonStyle, commonAttr } from '@/store/component-list';
 import generateID from '@/utils/generateID';
@@ -42,6 +42,9 @@ export default {
     ]),
     ...mapState('component', [
       'componentList',
+    ]),
+    ...mapGetters('component', [
+      'curComponent',
     ]),
   },
   methods: {
@@ -112,6 +115,19 @@ export default {
       };
 
       reader.readAsDataURL(file);
+    },
+    handleLock() {
+      this.changeCurComponent({ isLock: true });
+    },
+    handleUnlock() {
+      this.changeCurComponent({ isLock: false });
+    },
+    changeCurComponent(attr) {
+      const newComponent = { ...this.curComponent, ...attr };
+      this.$store.commit('component/changeComponent', {
+        component: this.curComponent,
+        newComponent,
+      });
     },
   },
   components: {},
