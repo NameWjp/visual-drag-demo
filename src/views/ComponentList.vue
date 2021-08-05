@@ -48,20 +48,21 @@ export default {
     box-sizing: border-box;
     user-select: none;
     width: 45%;
+    height: 30px;
     border: 1px solid #ddd;
     cursor: grab;
     margin-bottom: 10px;
     text-align: center;
     color: #333;
-    padding: 4px 5px;
     display: flex;
     align-items: center;
     justify-content: center;
     .icon {
       font-size: 18px;
-      margin-right: 4px;
+      margin-right: 3px;
       &.tupian {
         font-size: 24px;
+        margin-right: 0;
       }
       &.button {
         font-size: 20px;
