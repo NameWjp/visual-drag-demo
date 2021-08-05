@@ -30,6 +30,9 @@
         :style="getComponentStyle(item.style)"
       />
     </shape>
+
+    <!-- 标线 -->
+    <mark-line />
   </div>
 </template>
 
@@ -41,6 +44,7 @@ import { cloneDeep } from 'lodash-es';
 import generateID from '@/utils/generateID';
 import Grid from './Grid';
 import Shape from './Shape';
+import MarkLine from './MarkLine';
 
 const shapeStyle = ['width', 'height', 'top', 'left', 'rotate'];
 
@@ -92,6 +96,7 @@ export default {
   components: {
     Shape,
     Grid,
+    MarkLine,
   },
 };
 </script>

@@ -27,6 +27,7 @@ import { mapState, mapGetters } from 'vuex';
 import { throttle } from 'lodash-es';
 import { mod360, radianToAngle } from '@/utils/translate';
 import calculateComponentPositionAndSize from '@/utils/calculateComponentPositionAndSize';
+import eventEmitter from '@/utils/eventEmitter';
 
 export default {
   props: {
@@ -165,6 +166,10 @@ export default {
       const left = pos.left;
       const top = pos.top;
 
+      // 上一次拖拽的位置信息，用于判断当前拖拽的方向
+      let preX = e.clientX;
+      let preY = e.clientY;
+
       const move = throttle((mouseEvent) => {
         const curX = mouseEvent.clientX;
         const curY = mouseEvent.clientY;
@@ -172,11 +177,17 @@ export default {
         pos.top = curY - startY + top;
 
         this.$store.dispatch('component/setCurComponentStyle', pos);
+
+        // 触发元素移动事件，用于显示标线、吸附功能
+        eventEmitter.emit('move', curY > preY, curX > preX);
+        preX = curX;
+        preY = curY;
       }, 10);
 
       const up = () => {
         document.removeEventListener('mousemove', move);
         document.removeEventListener('mouseup', up);
+        eventEmitter.emit('unmove');
       };
 
       document.addEventListener('mousemove', move);

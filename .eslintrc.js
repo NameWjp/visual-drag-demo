@@ -26,6 +26,7 @@ module.exports = {
     'no-param-reassign': 0,
     'prefer-template': 0,
     'object-curly-newline': 0,
-    'no-constant-condition': [2, { checkLoops: false }]
+    'no-constant-condition': [2, { checkLoops: false }],
+    'no-lonely-if': 0
   },
 };
