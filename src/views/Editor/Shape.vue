@@ -280,7 +280,7 @@ export default {
         });
 
         this.$store.dispatch('component/setCurComponentStyle', style);
-      }, 20);
+      }, 10);
 
       const up = () => {
         document.removeEventListener('mousemove', move);
@@ -298,6 +298,7 @@ export default {
 <style scoped lang="scss">
 .shape {
   position: absolute;
+  user-select: none;
   &:hover {
     cursor: move;
   }
@@ -309,7 +310,6 @@ export default {
   }
   &.checked {
     outline: 1px solid #59c7f9;
-    user-select: none;
   }
 
   .rotate {

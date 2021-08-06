@@ -3,6 +3,7 @@
     <div
       ref="text"
       :class="{ canEdit }"
+      :tabindex="element.id"
       :contenteditable="canEdit"
       @dblclick="handleDBClick"
       @mousedown="handleMousedown"

@@ -1,6 +1,6 @@
 <template>
   <div
-    @mousedown="deselectCurComponent"
+    @mousedown="handleMouseDown"
     @dragover="handleDragover"
     @drop.prevent="handleDrop"
     ref="editor"
@@ -33,6 +33,9 @@
 
     <!-- 标线 -->
     <mark-line />
+
+    <!-- 选中区域 -->
+    <rect-area :info="areaInfo" v-show="isShowArea && areaInfo.width > 0 && areaInfo.height > 0" />
   </div>
 </template>
 
@@ -40,17 +43,26 @@
 import { mapState } from 'vuex';
 import { getStyle } from '@/utils/style';
 import componentList from '@/store/component-list';
-import { cloneDeep } from 'lodash-es';
+import { cloneDeep, throttle } from 'lodash-es';
 import generateID from '@/utils/generateID';
 import Grid from './Grid';
 import Shape from './Shape';
 import MarkLine from './MarkLine';
+import RectArea from './RectArea';
 
 const shapeStyle = ['width', 'height', 'top', 'left', 'rotate'];
 
 export default {
   data() {
-    return {};
+    return {
+      areaInfo: {
+        x: 0,
+        y: 0,
+        width: 0,
+        height: 0,
+      },
+      isShowArea: false,
+    };
   },
   computed: {
     ...mapState('component', [
@@ -58,6 +70,7 @@ export default {
     ]),
     ...mapState('canvas', [
       'canvasStyle',
+      'canvasEl',
     ]),
     ...mapState('drag', [
       'dragElement',
@@ -70,8 +83,54 @@ export default {
     changeStyleWithScale(value) {
       return value * parseInt(this.canvasStyle.scale, 10) / 100;
     },
+    handleMouseDown(e) {
+      this.deselectCurComponent();
+      this.getSelectRectInfo(e);
+    },
     deselectCurComponent() {
       this.$store.commit('component/setCurComponentIndex', null);
+    },
+    getSelectRectInfo(e) {
+      const canvasInfo = this.canvasEl.getBoundingClientRect();
+
+      const startX = e.clientX;
+      const startY = e.clientY;
+      let x = startX - canvasInfo.x;
+      let y = startY - canvasInfo.y;
+
+      this.isShowArea = true;
+
+      const move = throttle((mouseEvent) => {
+        const newX = mouseEvent.clientX;
+        const newY = mouseEvent.clientY;
+        const width = Math.abs(newX - startX);
+        const height = Math.abs(newY - startY);
+        if (newX < startX) {
+          x = newX - canvasInfo.x;
+        }
+        if (newY < startY) {
+          y = newY - canvasInfo.y;
+        }
+
+        this.areaInfo = { x, y, width, height };
+      }, 10);
+
+      const up = () => {
+        document.removeEventListener('mousemove', move);
+        document.removeEventListener('mouseup', up);
+        this.hideArea();
+      };
+
+      document.addEventListener('mousemove', move);
+      document.addEventListener('mouseup', up);
+    },
+    hideArea() {
+      this.isShowArea = false;
+      this.areaInfo = {
+        ...this.areaInfo,
+        width: 0,
+        height: 0,
+      };
     },
     getShapeStyle(style) {
       const filter = Object.keys(style).filter(key => !shapeStyle.includes(key));
@@ -97,6 +156,7 @@ export default {
     Shape,
     Grid,
     MarkLine,
+    RectArea,
   },
 };
 </script>
