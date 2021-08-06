@@ -4,8 +4,8 @@
     <el-button>恢复</el-button>
     <label for="input" class="el-button el-button--default el-button--small">插入图片</label>
     <el-button>预览</el-button>
-    <el-button>保存</el-button>
-    <el-button>清空画布</el-button>
+    <el-button @click="save">保存</el-button>
+    <el-button @click="clearComponents">清空画布</el-button>
     <el-button>组合</el-button>
     <el-button>拆分</el-button>
     <el-button @click="handleLock" :disabled="!curComponent || curComponent.isLock">锁定</el-button>
@@ -29,6 +29,7 @@ import { mapState, mapGetters } from 'vuex';
 import { debounce } from 'lodash-es';
 import { commonStyle, commonAttr } from '@/store/component-list';
 import generateID from '@/utils/generateID';
+import { CANVAS_DATA, CANVAS_STYLE } from '@/constant';
 
 const needChangeStyle = ['top', 'left', 'width', 'height', 'fontSize', 'borderWidth'];
 
@@ -48,6 +49,14 @@ export default {
     ]),
   },
   methods: {
+    clearComponents() {
+      this.$store.commit('component/setComponentList', []);
+    },
+    save() {
+      localStorage.setItem(CANVAS_DATA, JSON.stringify(this.componentList));
+      localStorage.setItem(CANVAS_STYLE, JSON.stringify(this.canvasStyle));
+      this.$message.success('保存成功');
+    },
     setCanvasStyle(key, value) {
       this.$store.commit('canvas/setCanvasStyle', {
         ...this.canvasStyle,

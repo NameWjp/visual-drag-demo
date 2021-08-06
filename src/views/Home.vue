@@ -37,6 +37,8 @@ import ComponentList from '@/views/ComponentList';
 import Editor from '@/views/Editor';
 import AttrList from '@/views/AttrList';
 import { mapGetters } from 'vuex';
+import { CANVAS_DATA, CANVAS_STYLE } from '@/constant';
+import generateID from '@/utils/generateID';
 
 export default {
   components: {
@@ -55,7 +57,27 @@ export default {
       'curComponent',
     ]),
   },
-  methods: {},
+  created() {
+    this.restore();
+  },
+  methods: {
+    restore() {
+      const canvasData = JSON.parse(localStorage.getItem(CANVAS_DATA));
+      if (canvasData) {
+        this.$store.commit('component/setComponentList', this.resetID(canvasData));
+      }
+      const canvasStyle = JSON.parse(localStorage.getItem(CANVAS_STYLE));
+      if (canvasStyle) {
+        this.$store.commit('canvas/setCanvasStyle', canvasStyle);
+      }
+    },
+    resetID(data) {
+      data.forEach(item => {
+        item.id = generateID();
+      });
+      return data;
+    },
+  },
 };
 </script>
 
