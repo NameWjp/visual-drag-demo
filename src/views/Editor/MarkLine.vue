@@ -51,6 +51,7 @@ export default {
       const curComponentStyle = getComponentRotatedStyle(this.curComponent.style);
       const curComponentHalfWidth = curComponentStyle.width / 2;
       const curComponentHalfHeight = curComponentStyle.height / 2;
+      const needToShow = [];
 
       this.componentList.forEach(component => {
         if (component === this.curComponent) return;
@@ -137,7 +138,6 @@ export default {
           ],
         };
 
-        const needToShow = [];
         Object.keys(conditions).forEach(key => {
           // 处理所有符合条件的行为
           conditions[key].forEach(condition => {
@@ -150,15 +150,17 @@ export default {
 
             // 处理标线
             this.$refs[condition.line].style[key] = `${condition.lineShift}px`;
-            needToShow.push(condition.line);
+            if (!needToShow.includes(condition.line)) {
+              needToShow.push(condition.line);
+            }
           });
         });
-
-        if (needToShow.length) {
-          // 根据移动的方向，同一方向上的标线只展示一条
-          this.chooseShowLine(needToShow, isDownward, isRightward);
-        }
       });
+
+      if (needToShow.length) {
+        // 根据移动的方向，同一方向上的标线只展示一条
+        this.chooseShowLine(needToShow, isDownward, isRightward);
+      }
     },
     // 当向下拖拽，按从下到上的顺序展示，否则相反
     // 当向右拖拽，则从右到做的顺序展示，否则相反

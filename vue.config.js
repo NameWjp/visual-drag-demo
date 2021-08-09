@@ -12,6 +12,9 @@ const vueConfig = {
   assetsDir: 'static',
   lintOnSave: devMode,
   productionSourceMap: false,
+  devServer: {
+    hot: false,
+  },
   chainWebpack(config) {
     // set svg-sprite-loader
     config.module
