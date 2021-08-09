@@ -95,8 +95,8 @@ export default {
 
       const startX = e.clientX;
       const startY = e.clientY;
-      let x = startX - canvasInfo.x;
-      let y = startY - canvasInfo.y;
+      let left = startX - canvasInfo.x;
+      let top = startY - canvasInfo.y;
 
       this.isShowArea = true;
 
@@ -106,14 +106,14 @@ export default {
         const width = Math.abs(newX - startX);
         const height = Math.abs(newY - startY);
         if (newX < startX) {
-          x = newX - canvasInfo.x;
+          left = newX - canvasInfo.x;
         }
         if (newY < startY) {
-          y = newY - canvasInfo.y;
+          top = newY - canvasInfo.y;
         }
 
-        this.areaInfo = { x, y, width, height };
-      }, 10);
+        this.areaInfo = { left, top, width, height };
+      }, 10, { trailing: false });
 
       const up = () => {
         document.removeEventListener('mousemove', move);
@@ -167,6 +167,7 @@ export default {
   background: #fff;
   margin: auto;
   overflow: hidden;
+  user-select: none;
   .component {
     width: 100%;
     height: 100%;

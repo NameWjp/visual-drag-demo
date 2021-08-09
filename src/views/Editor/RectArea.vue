@@ -1,8 +1,8 @@
 <template>
   <div
     :style="{
-      left: `${info.x}px`,
-      top: `${info.y}px`,
+      left: `${info.left}px`,
+      top: `${info.top}px`,
       width: `${info.width}px`,
       height: `${info.height}px`,
     }"
