@@ -13,7 +13,7 @@
     />
     <svg-icon
       v-show="element.isLock"
-      class="lock"
+      class="lock-icon"
       iconClass="lock"
     />
     <div
@@ -322,7 +322,7 @@ export default {
     cursor: grab;
   }
 
-  .lock {
+  .lock-icon {
     position: absolute;
     right: 0;
     top: 0;
