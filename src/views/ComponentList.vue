@@ -46,7 +46,6 @@ export default {
   padding: 10px 15px;
   .item {
     box-sizing: border-box;
-    user-select: none;
     width: 45%;
     height: 30px;
     border: 1px solid #ddd;
