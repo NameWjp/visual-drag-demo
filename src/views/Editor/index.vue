@@ -41,7 +41,7 @@
 
 <script>
 import { mapState } from 'vuex';
-import { getStyle } from '@/utils/style';
+import { getStyle, getComponentRotatedStyle } from '@/utils/style';
 import componentList from '@/store/component-list';
 import { cloneDeep, throttle } from 'lodash-es';
 import generateID from '@/utils/generateID';
@@ -115,14 +115,69 @@ export default {
         this.areaInfo = { left, top, width, height };
       }, 10, { trailing: false });
 
-      const up = () => {
+      const up = (e) => {
         document.removeEventListener('mousemove', move);
         document.removeEventListener('mouseup', up);
-        this.hideArea();
+
+        // 点击画布没有移动的时候清除选中区域
+        if (e.clientX === startX && e.clientY === startY) {
+          this.hideArea();
+          return;
+        }
+
+        this.createGroup();
       };
 
       document.addEventListener('mousemove', move);
       document.addEventListener('mouseup', up);
+    },
+    createGroup() {
+      // 获取选中区域的组件数据
+      const areaData = this.getSelectArea();
+      if (areaData.length <= 1) {
+        this.hideArea();
+        return;
+      }
+
+      // 根据选中区域和区域中每个组件的位移信息来创建 Group 组件
+      // 要遍历选择区域的每个组件，获取最小的 left 和 top，获取最大的 right 和 bottom
+      let left = Infinity;
+      let top = Infinity;
+      let bottom = -Infinity;
+      let right = -Infinity;
+
+      areaData.forEach(component => {
+        const style = getComponentRotatedStyle(component.style);
+        if (style.left < left) left = style.left;
+        if (style.top < top) top = style.top;
+        if (style.right > right) right = style.right;
+        if (style.bottom > bottom) bottom = style.bottom;
+      });
+
+      this.areaInfo = {
+        left,
+        top,
+        width: right - left,
+        height: bottom - top,
+      };
+    },
+    getSelectArea() {
+      const result = [];
+      const { left: aLeft, top: aTop, width: aWidth, height: aHeight } = this.areaInfo;
+      const aRight = aLeft + aWidth;
+      const aBottom = aTop + aHeight;
+
+      // 获取选择区域中的组件
+      this.componentList.forEach(component => {
+        if (component.isLock) return;
+
+        const { left, top, right, bottom } = getComponentRotatedStyle(component.style);
+        if (left >= aLeft && top >= aTop && right <= aRight && bottom <= aBottom) {
+          result.push(component);
+        }
+      });
+
+      return result;
     },
     hideArea() {
       this.isShowArea = false;
