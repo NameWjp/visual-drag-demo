@@ -26,5 +26,6 @@ export default {
 .area {
   position: absolute;
   border: 1px solid #70c0ff;
+  box-sizing: border-box;
 }
 </style>
