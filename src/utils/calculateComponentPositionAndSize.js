@@ -3,7 +3,7 @@ import { getCenterPoint, calculateRotatedPointCoordinate } from '@/utils/transla
 /**
  * 对角线的四个点的拖拽是任意方向的，可以分别计算旋转前的当前点和对称点的位置信息来计算尺寸
  */
-function calculateLeftTop(style, curPosition, proportion, pointInfo) {
+function calculateLeftTop(style, curPosition, pointInfo) {
   const { symmetricPoint } = pointInfo;
   const centerPoint = getCenterPoint(curPosition, symmetricPoint);
   const beforeRotateLeftTopPoint = calculateRotatedPointCoordinate(curPosition, centerPoint, -style.rotate);
@@ -20,7 +20,7 @@ function calculateLeftTop(style, curPosition, proportion, pointInfo) {
   }
 }
 
-function calculateRightTop(style, curPosition, proportion, pointInfo) {
+function calculateRightTop(style, curPosition, pointInfo) {
   const { symmetricPoint } = pointInfo;
   const centerPoint = getCenterPoint(curPosition, symmetricPoint);
   const beforeRotateRightTopPoint = calculateRotatedPointCoordinate(curPosition, centerPoint, -style.rotate);
@@ -37,7 +37,7 @@ function calculateRightTop(style, curPosition, proportion, pointInfo) {
   }
 }
 
-function calculateRightBottom(style, curPosition, proportion, pointInfo) {
+function calculateRightBottom(style, curPosition, pointInfo) {
   const { symmetricPoint } = pointInfo;
   const centerPoint = getCenterPoint(curPosition, symmetricPoint);
   const beforeRotateRightBottomPoint = calculateRotatedPointCoordinate(curPosition, centerPoint, -style.rotate);
@@ -54,7 +54,7 @@ function calculateRightBottom(style, curPosition, proportion, pointInfo) {
   }
 }
 
-function calculateLeftBottom(style, curPosition, proportion, pointInfo) {
+function calculateLeftBottom(style, curPosition, pointInfo) {
   const { symmetricPoint } = pointInfo;
   const centerPoint = getCenterPoint(curPosition, symmetricPoint);
   const beforeRotateLeftBottomPoint = calculateRotatedPointCoordinate(curPosition, centerPoint, -style.rotate);
@@ -74,7 +74,7 @@ function calculateLeftBottom(style, curPosition, proportion, pointInfo) {
 /**
  * 四个中点的拖拽只能沿相应轴的方向拖拽，所以需要先求出轴线上对应的点，再根据旋转后对应的点计算高度和中心点
  */
-function calculateTop(style, curPosition, proportion, pointInfo) {
+function calculateTop(style, curPosition, pointInfo) {
   const { symmetricPoint, center } = pointInfo;
   // 先获取旋转前 curPosition 对应坐标，需要注意的是我们是用的是拖拽前的中点，之后需要旋转回来，因为 rotate 属性的旋转中心是中点
   const beforeRotateCurPosition = calculateRotatedPointCoordinate(curPosition, center, -style.rotate);
@@ -93,7 +93,7 @@ function calculateTop(style, curPosition, proportion, pointInfo) {
   }
 }
 
-function calculateRight(style, curPosition, proportion, pointInfo) {
+function calculateRight(style, curPosition, pointInfo) {
   const { symmetricPoint, center } = pointInfo;
   const beforeRotateCurPosition = calculateRotatedPointCoordinate(curPosition, center, -style.rotate);
   const beforeRotateTopPoint = { x: beforeRotateCurPosition.x, y: center.y };
@@ -109,7 +109,7 @@ function calculateRight(style, curPosition, proportion, pointInfo) {
   }
 }
 
-function calculateBottom(style, curPosition, proportion, pointInfo) {
+function calculateBottom(style, curPosition, pointInfo) {
   const { symmetricPoint, center } = pointInfo;
   const beforeRotateCurPosition = calculateRotatedPointCoordinate(curPosition, center, -style.rotate);
   const beforeRotateTopPoint = { x: center.x, y: beforeRotateCurPosition.y };
@@ -125,7 +125,7 @@ function calculateBottom(style, curPosition, proportion, pointInfo) {
   }
 }
 
-function calculateLeft(style, curPosition, proportion, pointInfo) {
+function calculateLeft(style, curPosition, pointInfo) {
   const { symmetricPoint, center } = pointInfo;
   const beforeRotateCurPosition = calculateRotatedPointCoordinate(curPosition, center, -style.rotate);
   const beforeRotateTopPoint = { x: beforeRotateCurPosition.x, y: center.y };
@@ -152,6 +152,6 @@ const funcs = {
   l: calculateLeft,
 };
 
-export default function calculateComponentPositionAndSize(name, style, curPosition, proportion, pointInfo) {
-  funcs[name](style, curPosition, proportion, pointInfo);
+export default function calculateComponentPositionAndSize(name, style, curPosition, pointInfo) {
+  funcs[name](style, curPosition, pointInfo);
 }

@@ -247,9 +247,6 @@ export default {
     handleMouseDownOnPoint(point, e) {
       const style = { ...this.defaultStyle };
 
-      // 组件宽高比
-      const proportion = style.width / style.height;
-
       // 组件中心点
       const center = {
         x: style.left + style.width / 2,
@@ -279,7 +276,7 @@ export default {
           y: mouseEvent.clientY - canvasRect.top,
         };
 
-        calculateComponentPositionAndSize(point, style, curPosition, proportion, {
+        calculateComponentPositionAndSize(point, style, curPosition, {
           center,
           curPoint,
           symmetricPoint,
