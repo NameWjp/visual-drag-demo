@@ -6,8 +6,13 @@
     <el-button>预览</el-button>
     <el-button @click="save">保存</el-button>
     <el-button @click="clearComponents">清空画布</el-button>
-    <el-button>组合</el-button>
-    <el-button>拆分</el-button>
+    <el-button :disabled="!areaData.components.length" @click="compose">组合</el-button>
+    <el-button
+      :disabled="!curComponent || curComponent.isLock || curComponent.component !== 'group'"
+      @click="decompose"
+    >
+      拆分
+    </el-button>
     <el-button @click="handleLock" :disabled="!curComponent || curComponent.isLock">锁定</el-button>
     <el-button @click="handleUnlock" :disabled="!curComponent || !curComponent.isLock">解锁</el-button>
     <div class="canvas-config">
@@ -44,11 +49,20 @@ export default {
     ...mapState('component', [
       'componentList',
     ]),
+    ...mapState('compose', [
+      'areaData',
+    ]),
     ...mapGetters('component', [
       'curComponent',
     ]),
   },
   methods: {
+    compose() {
+      this.$store.dispatch('compose/compose');
+    },
+    decompose() {
+      this.$store.dispatch('compose/decompose');
+    },
     clearComponents() {
       this.$store.commit('component/setComponentList', []);
     },

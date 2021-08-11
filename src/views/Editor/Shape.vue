@@ -94,6 +94,12 @@ export default {
       return this.isChecked && !this.element.isLock;
     },
   },
+  mounted() {
+    // 用于 group 组件创建后获取光标
+    if (this.isChecked) {
+      this.getCursor();
+    }
+  },
   methods: {
     // 思路：旋转前和旋转后相对于x正方向的夹角的差值即为旋转的角度
     handleRotate(e) {
@@ -338,6 +344,7 @@ export default {
     margin-top: -4px;
     margin-left: -4px;
     border-radius: 50%;
+    z-index: 1;
   }
 }
 </style>

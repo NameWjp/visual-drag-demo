@@ -1,5 +1,5 @@
 <template>
-  <el-button>{{ propValue }}</el-button>
+  <el-button style="margin: 0;">{{ propValue }}</el-button>
 </template>
 
 <script>

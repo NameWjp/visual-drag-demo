@@ -45,6 +45,7 @@ import { getStyle, getComponentRotatedStyle } from '@/utils/style';
 import componentList from '@/store/component-list';
 import { cloneDeep, throttle } from 'lodash-es';
 import generateID from '@/utils/generateID';
+import eventEmitter from '@/utils/eventEmitter';
 import Grid from './Grid';
 import Shape from './Shape';
 import MarkLine from './MarkLine';
@@ -56,8 +57,8 @@ export default {
   data() {
     return {
       areaInfo: {
-        x: 0,
-        y: 0,
+        left: 0,
+        top: 0,
         width: 0,
         height: 0,
       },
@@ -78,6 +79,8 @@ export default {
   },
   mounted() {
     this.$store.commit('canvas/setCanvasEl', this.$refs.editor);
+
+    eventEmitter.on('hideArea', this.hideArea);
   },
   methods: {
     changeStyleWithScale(value) {
@@ -154,12 +157,25 @@ export default {
         if (style.bottom > bottom) bottom = style.bottom;
       });
 
+      const width = right - left;
+      const height = bottom - top;
+
       this.areaInfo = {
         left,
         top,
-        width: right - left,
-        height: bottom - top,
+        width,
+        height,
       };
+
+      this.$store.commit('compose/setAreaData', {
+        style: {
+          left,
+          top,
+          width,
+          height,
+        },
+        components: areaData,
+      });
     },
     getSelectArea() {
       const result = [];
@@ -186,6 +202,8 @@ export default {
         width: 0,
         height: 0,
       };
+
+      this.$store.dispatch('compose/clearAreaData');
     },
     getShapeStyle(style) {
       const filter = Object.keys(style).filter(key => !shapeStyle.includes(key));

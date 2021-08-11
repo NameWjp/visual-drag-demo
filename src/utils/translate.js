@@ -12,6 +12,10 @@ export function radianToAngle(radian) {
   return radian * 180 / Math.PI;
 }
 
+export function toPercent(val) {
+  return `${val * 100}%`;
+}
+
 /**
  * 计算一个点根据圆心旋转一定角度后的坐标
  * @param {Object} point  旋转前的点坐标

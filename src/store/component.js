@@ -28,6 +28,12 @@ const mutations = {
       state.componentList.push(component);
     }
   },
+  deleteComponentById(state, id) {
+    const index = state.componentList.findIndex(c => c.id === id);
+    if (index !== -1) {
+      state.componentList.splice(index, 1);
+    }
+  },
   changeComponent(state, { component, newComponent }) {
     const index = state.componentList.findIndex(c => c === component);
     if (index !== -1) {

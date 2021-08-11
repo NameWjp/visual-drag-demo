@@ -3,3 +3,8 @@ let id = 0;
 export default function generateID() {
   return id++;
 }
+
+const groupKey = 'group_sub_';
+export function getGroupSubID(id) {
+  return groupKey + id;
+}
