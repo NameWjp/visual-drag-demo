@@ -115,8 +115,11 @@ export default {
 
       // 旋转前的角度
       const rotateDegreeBefore = radianToAngle(Math.atan2(startY - centerY, startX - centerX));
+      // 是否旋转
+      let hasMove = false;
 
       const move = throttle((mouseEvent) => {
+        hasMove = true;
         const curX = mouseEvent.clientX;
         const curY = mouseEvent.clientY;
         // 旋转后的角度
@@ -128,6 +131,9 @@ export default {
       }, 10);
 
       const up = () => {
+        if (hasMove) {
+          this.$store.dispatch('snapshot/recordSnapshot');
+        }
         document.removeEventListener('mousemove', move);
         document.removeEventListener('mouseup', up);
         // 旋转后重新计算光标方向
@@ -186,8 +192,11 @@ export default {
       // 上一次拖拽的位置信息，用于判断当前拖拽的方向
       let preX = e.clientX;
       let preY = e.clientY;
+      // 是否移动
+      let hasMove = false;
 
       const move = throttle((mouseEvent) => {
+        hasMove = true;
         const curX = mouseEvent.clientX;
         const curY = mouseEvent.clientY;
         pos.left = curX - startX + left;
@@ -202,8 +211,12 @@ export default {
       }, 10);
 
       const up = () => {
+        if (hasMove) {
+          this.$store.dispatch('snapshot/recordSnapshot');
+        }
         document.removeEventListener('mousemove', move);
         document.removeEventListener('mouseup', up);
+        // 用于隐藏标线
         eventEmitter.emit('unmove');
       };
 
@@ -270,7 +283,11 @@ export default {
         y: 2 * center.y - curPoint.y,
       };
 
+      // 是否移动
+      let hasMove = false;
+
       const move = throttle((mouseEvent) => {
+        hasMove = true;
         const curPosition = {
           x: mouseEvent.clientX - canvasRect.left,
           y: mouseEvent.clientY - canvasRect.top,
@@ -286,6 +303,9 @@ export default {
       }, 10);
 
       const up = () => {
+        if (hasMove) {
+          this.$store.dispatch('snapshot/recordSnapshot');
+        }
         document.removeEventListener('mousemove', move);
         document.removeEventListener('mouseup', up);
       };

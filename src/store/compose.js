@@ -2,6 +2,7 @@ import decomposeComponent from '@/utils/decomposeComponent';
 import generateID from '@/utils/generateID';
 import { commonStyle, commonAttr } from '@/store/component-list';
 import eventEmitter from '@/utils/eventEmitter';
+import createGroupStyle from '@/utils/createGroupStyle';
 
 function getDefaultAreaData() {
   return {
@@ -44,19 +45,22 @@ const actions = {
       }
     });
 
+    // 删除原先的组件
     dispatch('batchDeleteComponent', components);
-    commit('component/addComponent', {
-      component: {
-        id: generateID(),
-        component: 'group',
-        ...commonAttr,
-        style: {
-          ...commonStyle,
-          ...state.areaData.style,
-        },
-        propValue: components,
+    const groupComponent = {
+      id: generateID(),
+      component: 'group',
+      ...commonAttr,
+      style: {
+        ...commonStyle,
+        ...state.areaData.style,
       },
-    }, { root: true });
+      propValue: components,
+    };
+    // 生成子组件样式
+    createGroupStyle(groupComponent);
+    // 添加 group 组件
+    commit('component/addComponent', { component: groupComponent }, { root: true });
     commit('component/setCurComponentIndex', rootState.component.componentList.length - 1, { root: true });
     eventEmitter.emit('hideArea');
   },
@@ -69,6 +73,7 @@ const actions = {
     const editorRect = rootState.canvas.canvasEl.getBoundingClientRect();
 
     subComponents.forEach(component => {
+      // 还原子组件样式
       decomposeComponent(component, editorRect, parentStyle);
       commit('component/addComponent', { component }, { root: true });
     });

@@ -196,14 +196,16 @@ export default {
       return result;
     },
     hideArea() {
-      this.isShowArea = false;
-      this.areaInfo = {
-        ...this.areaInfo,
-        width: 0,
-        height: 0,
-      };
+      if (this.isShowArea) {
+        this.isShowArea = false;
+        this.areaInfo = {
+          ...this.areaInfo,
+          width: 0,
+          height: 0,
+        };
 
-      this.$store.dispatch('compose/clearAreaData');
+        this.$store.dispatch('compose/clearAreaData');
+      }
     },
     getShapeStyle(style) {
       const filter = Object.keys(style).filter(key => !shapeStyle.includes(key));
@@ -223,6 +225,7 @@ export default {
       component.style.top = e.offsetY;
       component.id = generateID();
       this.$store.commit('component/addComponent', { component });
+      this.$store.dispatch('snapshot/recordSnapshot');
     },
   },
   components: {

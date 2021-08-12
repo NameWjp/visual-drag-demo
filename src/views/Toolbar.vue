@@ -1,7 +1,7 @@
 <template>
   <div class="toolbar">
-    <el-button>撤消</el-button>
-    <el-button>恢复</el-button>
+    <el-button @click="undo">撤消</el-button>
+    <el-button @click="redo">恢复</el-button>
     <label for="input" class="el-button el-button--default el-button--small">插入图片</label>
     <el-button>预览</el-button>
     <el-button @click="save">保存</el-button>
@@ -26,7 +26,7 @@
       <input :value="canvasStyle.scale" @input="handleScaleChange"/> %
     </div>
   </div>
-  <input type="file" @change="handleFileChange" id="input" hidden />
+  <input ref="input" type="file" @change="handleFileChange" id="input" hidden />
 </template>
 
 <script>
@@ -57,14 +57,23 @@ export default {
     ]),
   },
   methods: {
+    undo() {
+      this.$store.dispatch('snapshot/undo');
+    },
+    redo() {
+      this.$store.dispatch('snapshot/redo');
+    },
     compose() {
       this.$store.dispatch('compose/compose');
+      this.$store.dispatch('snapshot/recordSnapshot');
     },
     decompose() {
       this.$store.dispatch('compose/decompose');
+      this.$store.dispatch('snapshot/recordSnapshot');
     },
     clearComponents() {
       this.$store.commit('component/setComponentList', []);
+      this.$store.dispatch('snapshot/recordSnapshot');
     },
     save() {
       localStorage.setItem(CANVAS_DATA, JSON.stringify(this.componentList));
@@ -132,6 +141,12 @@ export default {
               },
             },
           });
+
+          this.$store.dispatch('snapshot/recordSnapshot');
+
+          // 修复同一文件不触发 change 实现的问题
+          this.$refs.input.setAttribute('type', 'text');
+          this.$refs.input.setAttribute('type', 'file');
         };
 
         img.src = base64Url;
@@ -141,9 +156,11 @@ export default {
     },
     handleLock() {
       this.changeCurComponent({ isLock: true });
+      this.$store.dispatch('snapshot/recordSnapshot');
     },
     handleUnlock() {
       this.changeCurComponent({ isLock: false });
+      this.$store.dispatch('snapshot/recordSnapshot');
     },
     changeCurComponent(attr) {
       const newComponent = { ...this.curComponent, ...attr };
