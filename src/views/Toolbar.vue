@@ -13,8 +13,8 @@
     >
       拆分
     </el-button>
-    <el-button @click="handleLock" :disabled="!curComponent || curComponent.isLock">锁定</el-button>
-    <el-button @click="handleUnlock" :disabled="!curComponent || !curComponent.isLock">解锁</el-button>
+    <el-button @click="lock" :disabled="!curComponent || curComponent.isLock">锁定</el-button>
+    <el-button @click="unlock" :disabled="!curComponent || !curComponent.isLock">解锁</el-button>
     <div class="canvas-config">
       <span>画布大小</span>
       <input :value="canvasStyle.width" @input="setCanvasStyle('width', $event.target.value)" />
@@ -154,20 +154,13 @@ export default {
 
       reader.readAsDataURL(file);
     },
-    handleLock() {
-      this.changeCurComponent({ isLock: true });
+    lock() {
+      this.$store.dispatch('component/lock');
       this.$store.dispatch('snapshot/recordSnapshot');
     },
-    handleUnlock() {
-      this.changeCurComponent({ isLock: false });
+    unlock() {
+      this.$store.dispatch('component/unlock');
       this.$store.dispatch('snapshot/recordSnapshot');
-    },
-    changeCurComponent(attr) {
-      const newComponent = { ...this.curComponent, ...attr };
-      this.$store.commit('component/changeComponent', {
-        component: this.curComponent,
-        newComponent,
-      });
     },
   },
   components: {},

@@ -1,6 +1,6 @@
 <template>
   <div class="contextmenu" :style="{ left: `${info.left}px`, top: `${info.top}px` }">
-    <ul @mousedown="handleMouseDown">
+    <ul @mousedown.stop>
       <template v-if="curComponent">
         <template v-if="!curComponent.isLock">
           <li @click="copy">复制</li>
@@ -37,23 +37,24 @@ export default {
     ]),
   },
   methods: {
-    handleMouseDown(e) {
-      // 最外层会捕获 mousedown 事件取消选择组件和右键菜单，这里阻止冒泡，手动关闭右键菜单可保留选择组件
-      if (this.curComponent) {
-        e.stopPropagation();
-        eventEmitter.emit('hideContextMenu');
-      }
-    },
     copy() {},
     paste() {},
     cut() {},
     deleteComponent() {},
-    lock() {},
+    lock() {
+      this.$store.dispatch('component/lock');
+      this.$store.dispatch('snapshot/recordSnapshot');
+      eventEmitter.emit('hideContextMenu');
+    },
+    unlock() {
+      this.$store.dispatch('component/unlock');
+      this.$store.dispatch('snapshot/recordSnapshot');
+      eventEmitter.emit('hideContextMenu');
+    },
     topComponent() {},
     bottomComponent() {},
     upComponent() {},
     downComponent() {},
-    unlock() {},
   },
 };
 </script>
