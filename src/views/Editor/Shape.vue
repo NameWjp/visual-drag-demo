@@ -145,6 +145,7 @@ export default {
     },
     handleMouseDownOnShape(e) {
       this.selectCurComponent();
+      eventEmitter.emit('hideContextMenu');
 
       if (this.element.isLock) return;
 

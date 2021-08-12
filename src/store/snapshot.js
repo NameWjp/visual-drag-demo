@@ -41,6 +41,7 @@ const actions = {
       commit('component/setComponentList', cloneDeep(snapshotList[snapshotIndex]), { root: true });
       commit('component/setCurComponentIndex', null, { root: true });
       eventEmitter.emit('hideArea');
+      eventEmitter.emit('hideContextMenu');
     }
   },
   undo({ state, commit }) {
@@ -52,6 +53,7 @@ const actions = {
       commit('component/setComponentList', cloneDeep(snapshotList[snapshotIndex] || []), { root: true });
       commit('component/setCurComponentIndex', null, { root: true });
       eventEmitter.emit('hideArea');
+      eventEmitter.emit('hideContextMenu');
     }
   },
 };

@@ -3,6 +3,7 @@
     @mousedown="handleMouseDown"
     @dragover="handleDragover"
     @drop.prevent="handleDrop"
+    @contextmenu.prevent.stop="handleContextMenu"
     ref="editor"
     class="editor"
     :style="{
@@ -36,6 +37,9 @@
 
     <!-- 选中区域 -->
     <rect-area :info="areaInfo" v-show="isShowArea && areaInfo.width > 0 && areaInfo.height > 0" />
+
+    <!-- 右键菜单 -->
+    <context-menu :info="menuInfo" v-show="isShowMenuInfo" />
   </div>
 </template>
 
@@ -50,12 +54,14 @@ import Grid from './Grid';
 import Shape from './Shape';
 import MarkLine from './MarkLine';
 import RectArea from './RectArea';
+import ContextMenu from './ContextMenu';
 
 const shapeStyle = ['width', 'height', 'top', 'left', 'rotate'];
 
 export default {
   data() {
     return {
+      // 选中区域
       areaInfo: {
         left: 0,
         top: 0,
@@ -63,6 +69,12 @@ export default {
         height: 0,
       },
       isShowArea: false,
+      // 右键菜单
+      menuInfo: {
+        left: 0,
+        top: 0,
+      },
+      isShowMenuInfo: false,
     };
   },
   computed: {
@@ -81,12 +93,31 @@ export default {
     this.$store.commit('canvas/setCanvasEl', this.$refs.editor);
 
     eventEmitter.on('hideArea', this.hideArea);
+    eventEmitter.on('hideContextMenu', this.hideContextMenu);
   },
   methods: {
+    handleContextMenu(e) {
+      const canvasInfo = this.canvasEl.getBoundingClientRect();
+      const left = e.clientX - canvasInfo.x;
+      const top = e.clientY - canvasInfo.y;
+
+      this.menuInfo = {
+        left,
+        top,
+      };
+      this.isShowMenuInfo = true;
+    },
+    hideContextMenu() {
+      this.isShowMenuInfo = false;
+    },
     changeStyleWithScale(value) {
       return value * parseInt(this.canvasStyle.scale, 10) / 100;
     },
     handleMouseDown(e) {
+      // 0 左击 1 滚轮 2 右击
+      if (e.button !== 2) {
+        this.hideContextMenu();
+      }
       this.deselectCurComponent();
       this.getSelectRectInfo(e);
     },
@@ -233,6 +264,7 @@ export default {
     Grid,
     MarkLine,
     RectArea,
+    ContextMenu,
   },
 };
 </script>
