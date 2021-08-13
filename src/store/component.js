@@ -58,6 +58,12 @@ const actions = {
       });
     }
   },
+  deleteCurComponent({ getters, commit }) {
+    const curComponent = getters.curComponent;
+
+    commit('deleteComponentById', curComponent.id);
+    commit('setCurComponentIndex', null);
+  },
 };
 
 export default {

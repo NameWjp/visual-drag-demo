@@ -5,6 +5,7 @@ import drag from './drag';
 import compose from './compose';
 import snapshot from './snapshot';
 import lock from './lock';
+import copy from './copy';
 
 export default createStore({
   modules: {
@@ -14,5 +15,6 @@ export default createStore({
     compose,
     snapshot,
     lock,
+    copy,
   },
 });

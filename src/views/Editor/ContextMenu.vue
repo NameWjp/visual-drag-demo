@@ -37,24 +37,42 @@ export default {
     ]),
   },
   methods: {
-    copy() {},
-    paste() {},
-    cut() {},
-    deleteComponent() {},
+    copy() {
+      this.$store.dispatch('copy/copy');
+      this.hideContextMenu();
+    },
+    paste() {
+      this.$store.dispatch('copy/paste', this.info);
+      this.$store.dispatch('snapshot/recordSnapshot');
+      this.hideContextMenu();
+    },
+    cut() {
+      this.$store.dispatch('copy/cut');
+      this.$store.dispatch('snapshot/recordSnapshot');
+      this.hideContextMenu();
+    },
+    deleteComponent() {
+      this.$store.dispatch('component/deleteCurComponent');
+      this.$store.dispatch('snapshot/recordSnapshot');
+      this.hideContextMenu();
+    },
     lock() {
       this.$store.dispatch('lock/lock');
       this.$store.dispatch('snapshot/recordSnapshot');
-      eventEmitter.emit('hideContextMenu');
+      this.hideContextMenu();
     },
     unlock() {
       this.$store.dispatch('lock/unlock');
       this.$store.dispatch('snapshot/recordSnapshot');
-      eventEmitter.emit('hideContextMenu');
+      this.hideContextMenu();
     },
     topComponent() {},
     bottomComponent() {},
     upComponent() {},
     downComponent() {},
+    hideContextMenu() {
+      eventEmitter.emit('hideContextMenu');
+    },
   },
 };
 </script>
