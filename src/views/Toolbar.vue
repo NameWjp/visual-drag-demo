@@ -65,10 +65,12 @@ export default {
     },
     compose() {
       this.$store.dispatch('compose/compose');
+      this.$store.commit('component/setCurComponentIndex', this.componentList.length - 1);
       this.$store.dispatch('snapshot/recordSnapshot');
     },
     decompose() {
       this.$store.dispatch('compose/decompose');
+      this.$store.commit('component/setCurComponentIndex', null);
       this.$store.dispatch('snapshot/recordSnapshot');
     },
     clearComponents() {

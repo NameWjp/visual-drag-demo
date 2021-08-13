@@ -61,7 +61,6 @@ const actions = {
     createGroupStyle(groupComponent);
     // 添加 group 组件
     commit('component/addComponent', { component: groupComponent }, { root: true });
-    commit('component/setCurComponentIndex', rootState.component.componentList.length - 1, { root: true });
     eventEmitter.emit('hideArea');
   },
   decompose({ commit, rootState, rootGetters }, component) {
@@ -79,7 +78,6 @@ const actions = {
     });
 
     commit('component/deleteComponentById', component.id, { root: true });
-    commit('component/setCurComponentIndex', null, { root: true });
   },
   // 将已经放入 group 组件的数据删除
   batchDeleteComponent({ commit }, deleteComponents) {
