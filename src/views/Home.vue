@@ -39,6 +39,7 @@ import AttrList from '@/views/AttrList';
 import { mapGetters } from 'vuex';
 import { CANVAS_DATA, CANVAS_STYLE } from '@/constant';
 import generateID from '@/utils/generateID';
+import { listenGlobalKeyDown } from '@/utils/shortcutKey';
 
 export default {
   components: {
@@ -59,6 +60,8 @@ export default {
   },
   created() {
     this.restore();
+    // 全局按键监听
+    listenGlobalKeyDown();
   },
   methods: {
     restore() {

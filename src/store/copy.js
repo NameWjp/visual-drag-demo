@@ -2,6 +2,8 @@ import { cloneDeep } from 'lodash-es';
 import { ElMessage } from 'element-plus';
 import generateID from '@/utils/generateID';
 
+let pasteCount = 0;
+
 const state = {
   copyData: null,
 };
@@ -20,6 +22,7 @@ const actions = {
     if (!component) return;
 
     commit('setCopyData', component);
+    pasteCount = 0;
   },
   paste({ state, commit }, position) {
     if (!state.copyData) {
@@ -33,13 +36,14 @@ const actions = {
       data.style.left = position.left;
       data.style.top = position.top;
     } else {
-      data.style.left += 10;
-      data.style.top += 10;
+      data.style.left += (pasteCount + 1) * 10;
+      data.style.top += (pasteCount + 1) * 10;
     }
 
     commit('component/addComponent', {
       component: data,
     }, { root: true });
+    pasteCount += 1;
   },
   cut({ dispatch }) {
     dispatch('copy');

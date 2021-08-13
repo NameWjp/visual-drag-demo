@@ -35,6 +35,7 @@ import { debounce } from 'lodash-es';
 import { commonStyle, commonAttr } from '@/store/component-list';
 import generateID from '@/utils/generateID';
 import { CANVAS_DATA, CANVAS_STYLE } from '@/constant';
+import eventEmitter from '@/utils/eventEmitter';
 
 const needChangeStyle = ['top', 'left', 'width', 'height', 'fontSize', 'borderWidth'];
 
@@ -55,6 +56,9 @@ export default {
     ...mapGetters('component', [
       'curComponent',
     ]),
+  },
+  created() {
+    eventEmitter.on('save', this.save);
   },
   methods: {
     undo() {

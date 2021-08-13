@@ -1,5 +1,5 @@
 <template>
-  <div class="v-text">
+  <div class="v-text" @keydown="handleKeyDown">
     <div
       ref="text"
       :class="{ canEdit }"
@@ -16,6 +16,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
+import { ctrlCode, listenCodes } from '@/utils/shortcutKey';
 
 export default {
   props: {
@@ -30,6 +31,7 @@ export default {
   data() {
     return {
       canEdit: false,
+      isCtrlDown: false,
     };
   },
   computed: {
@@ -38,6 +40,13 @@ export default {
     ]),
   },
   methods: {
+    handleKeyDown(e) {
+      if (ctrlCode.includes(e.code)) {
+        this.isCtrlDown = true;
+      } else if (this.isCtrlDown && this.canEdit && listenCodes.includes(e.code)) {
+        e.stopPropagation();
+      }
+    },
     handleMousedown(e) {
       if (this.canEdit) {
         e.stopPropagation();
