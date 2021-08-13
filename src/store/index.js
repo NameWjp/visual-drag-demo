@@ -6,6 +6,7 @@ import compose from './compose';
 import snapshot from './snapshot';
 import lock from './lock';
 import copy from './copy';
+import layer from './layer';
 
 export default createStore({
   modules: {
@@ -16,5 +17,6 @@ export default createStore({
     snapshot,
     lock,
     copy,
+    layer,
   },
 });

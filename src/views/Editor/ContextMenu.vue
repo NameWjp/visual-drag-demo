@@ -66,10 +66,26 @@ export default {
       this.$store.dispatch('snapshot/recordSnapshot');
       this.hideContextMenu();
     },
-    topComponent() {},
-    bottomComponent() {},
-    upComponent() {},
-    downComponent() {},
+    topComponent() {
+      this.$store.dispatch('layer/topComponent');
+      this.$store.dispatch('snapshot/recordSnapshot');
+      this.hideContextMenu();
+    },
+    bottomComponent() {
+      this.$store.dispatch('layer/bottomComponent');
+      this.$store.dispatch('snapshot/recordSnapshot');
+      this.hideContextMenu();
+    },
+    upComponent() {
+      this.$store.dispatch('layer/upComponent');
+      this.$store.dispatch('snapshot/recordSnapshot');
+      this.hideContextMenu();
+    },
+    downComponent() {
+      this.$store.dispatch('layer/downComponent');
+      this.$store.dispatch('snapshot/recordSnapshot');
+      this.hideContextMenu();
+    },
     hideContextMenu() {
       eventEmitter.emit('hideContextMenu');
     },

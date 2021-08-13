@@ -23,10 +23,7 @@ const actions = {
   },
   paste({ state, commit }, position) {
     if (!state.copyData) {
-      ElMessage({
-        type: 'error',
-        message: '请先复制或剪切组件',
-      });
+      ElMessage.error('请先复制或剪切组件');
       return;
     }
 
