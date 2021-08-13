@@ -58,20 +58,6 @@ const actions = {
       });
     }
   },
-  lock({ getters, commit }) {
-    const newComponent = { ...getters.curComponent, isLock: true };
-    commit('changeComponent', {
-      component: getters.curComponent,
-      newComponent,
-    });
-  },
-  unlock({ getters, commit }) {
-    const newComponent = { ...getters.curComponent, isLock: false };
-    commit('changeComponent', {
-      component: getters.curComponent,
-      newComponent,
-    });
-  },
 };
 
 export default {

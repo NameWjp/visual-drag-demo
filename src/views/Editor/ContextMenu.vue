@@ -42,12 +42,12 @@ export default {
     cut() {},
     deleteComponent() {},
     lock() {
-      this.$store.dispatch('component/lock');
+      this.$store.dispatch('lock/lock');
       this.$store.dispatch('snapshot/recordSnapshot');
       eventEmitter.emit('hideContextMenu');
     },
     unlock() {
-      this.$store.dispatch('component/unlock');
+      this.$store.dispatch('lock/unlock');
       this.$store.dispatch('snapshot/recordSnapshot');
       eventEmitter.emit('hideContextMenu');
     },

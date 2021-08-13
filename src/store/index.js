@@ -4,6 +4,7 @@ import canvas from './canvas';
 import drag from './drag';
 import compose from './compose';
 import snapshot from './snapshot';
+import lock from './lock';
 
 export default createStore({
   modules: {
@@ -12,5 +13,6 @@ export default createStore({
     drag,
     compose,
     snapshot,
+    lock,
   },
 });

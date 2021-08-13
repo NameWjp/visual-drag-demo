@@ -155,11 +155,11 @@ export default {
       reader.readAsDataURL(file);
     },
     lock() {
-      this.$store.dispatch('component/lock');
+      this.$store.dispatch('lock/lock');
       this.$store.dispatch('snapshot/recordSnapshot');
     },
     unlock() {
-      this.$store.dispatch('component/unlock');
+      this.$store.dispatch('lock/unlock');
       this.$store.dispatch('snapshot/recordSnapshot');
     },
   },
