@@ -32,7 +32,7 @@ const actions = {
   clearAreaData({ commit }) {
     commit('setAreaData', getDefaultAreaData());
   },
-  compose({ state, commit, dispatch, rootState }) {
+  compose({ state, commit, dispatch }) {
     const components = [];
 
     state.areaData.components.forEach(component => {
