@@ -20,7 +20,8 @@
             <p v-else class="placeholder">请选择组件</p>
           </el-tab-pane>
           <el-tab-pane label="动画" name="animation">
-            <p class="placeholder">请选择组件</p>
+            <animation-list v-if="curComponent" />
+            <p v-else class="placeholder">请选择组件</p>
           </el-tab-pane>
           <el-tab-pane label="事件" name="events">
             <p class="placeholder">请选择组件</p>
@@ -40,6 +41,7 @@ import { mapGetters } from 'vuex';
 import { CANVAS_DATA, CANVAS_STYLE } from '@/constant';
 import generateID from '@/utils/generateID';
 import { listenGlobalKeyDown } from '@/utils/shortcutKey';
+import AnimationList from '@/views/AnimationList';
 
 export default {
   components: {
@@ -47,6 +49,7 @@ export default {
     ComponentList,
     Editor,
     AttrList,
+    AnimationList,
   },
   data() {
     return {

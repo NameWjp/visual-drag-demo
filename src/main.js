@@ -9,6 +9,7 @@ import '@/icons/index';
 import 'normalize.css';
 import '@/styles/index.scss';
 import 'element-plus/lib/theme-chalk/index.css';
+import 'animate.css';
 
 const app = createApp(App);
 app.use(ElementPlus, {

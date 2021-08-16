@@ -7,6 +7,7 @@ import snapshot from './snapshot';
 import lock from './lock';
 import copy from './copy';
 import layer from './layer';
+import animation from './animation';
 
 export default createStore({
   modules: {
@@ -18,5 +19,6 @@ export default createStore({
     lock,
     copy,
     layer,
+    animation,
   },
 });

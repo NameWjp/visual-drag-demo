@@ -33,6 +33,7 @@ import { throttle } from 'lodash-es';
 import { mod360, radianToAngle } from '@/utils/translate';
 import calculateComponentPositionAndSize from '@/utils/calculateComponentPositionAndSize';
 import eventEmitter from '@/utils/eventEmitter';
+import runAnimation from '@/utils/runAnimation';
 
 export default {
   props: {
@@ -99,6 +100,10 @@ export default {
     if (this.isChecked) {
       this.getCursor();
     }
+
+    eventEmitter.on('runAnimation', () => {
+      runAnimation(this.$el, this.curComponent.animations);
+    });
   },
   methods: {
     // 思路：旋转前和旋转后相对于x正方向的夹角的差值即为旋转的角度

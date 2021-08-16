@@ -29,6 +29,7 @@ module.exports = {
     'no-constant-condition': [2, { checkLoops: false }],
     'no-lonely-if': 0,
     'global-require': 0,
-    'no-unused-expressions': 0
+    'no-unused-expressions': 0,
+    'no-await-in-loop': 0
   },
 };
