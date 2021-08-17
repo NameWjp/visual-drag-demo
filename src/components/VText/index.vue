@@ -16,7 +16,7 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { ctrlCode, listenCodes } from '@/utils/shortcutKey';
+import { ctrlCode, listenCodes } from '@/effect/shortcutKey';
 
 export default {
   props: {

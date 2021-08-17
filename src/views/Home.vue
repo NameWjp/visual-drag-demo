@@ -41,7 +41,7 @@ import AttrList from '@/views/AttrList';
 import { mapGetters } from 'vuex';
 import { CANVAS_DATA, CANVAS_STYLE } from '@/constant';
 import generateID from '@/utils/generateID';
-import { listenGlobalKeyDown } from '@/utils/shortcutKey';
+import { listenGlobalKeyDown } from '@/effect/shortcutKey';
 import AnimationList from '@/views/AnimationList';
 import EventList from '@/views/EventList';
 

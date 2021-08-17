@@ -1,5 +1,5 @@
 import store from '@/store';
-import eventEmitter from './eventEmitter';
+import eventEmitter from '@/utils/eventEmitter';
 
 const vCode = 'KeyV'; // 粘贴
 const cCode = 'KeyC'; // 复制
