@@ -7,7 +7,7 @@ function resolve(dir) {
 }
 
 const vueConfig = {
-  publicPath: '/',
+  publicPath: '/visual-drag-demo/',
   outputDir: 'dist',
   assetsDir: 'static',
   lintOnSave: devMode,

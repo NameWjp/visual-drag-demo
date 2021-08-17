@@ -6,7 +6,8 @@
     "dev": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.config.js"
+    "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.config.js",
+    "publish": "deploy.sh"
   },
   "husky": {
     "hooks": {
