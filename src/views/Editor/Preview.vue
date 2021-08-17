@@ -34,6 +34,7 @@ import PreviewWrapper from '@/views/Editor/PreviewWrapper';
 import { getStyle } from '@/utils/style';
 
 export default {
+  emits: ['update:show'],
   props: {
     show: {
       type: Boolean,
