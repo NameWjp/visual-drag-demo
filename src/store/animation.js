@@ -7,18 +7,20 @@ const mutations = {};
 const actions = {
   addAnimation({ commit, rootGetters }, animation) {
     const component = rootGetters['component/curComponent'];
-    component.animations.push(animation);
+    const animations = [...component.animations];
+    animations.push(animation);
     commit('component/changeComponent', {
       component,
-      newComponent: { ...component },
+      newComponent: { ...component, animations },
     }, { root: true });
   },
   removeAnimation({ commit, rootGetters }, index) {
     const component = rootGetters['component/curComponent'];
-    component.animations.splice(index, 1);
+    const animations = [...component.animations];
+    animations.splice(index, 1);
     commit('component/changeComponent', {
       component,
-      newComponent: { ...component },
+      newComponent: { ...component, animations },
     }, { root: true });
   },
 };
