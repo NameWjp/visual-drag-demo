@@ -41,7 +41,7 @@ function save() {
   eventEmitter.emit('save');
 }
 function preview() {
-  // todo preview
+  eventEmitter.emit('preview');
 }
 function clearComponents() {
   store.commit('component/setComponentList', []);

@@ -65,6 +65,7 @@ export default {
   },
   created() {
     eventEmitter.on('save', this.save);
+    eventEmitter.on('preview', this.preview);
   },
   methods: {
     preview() {
