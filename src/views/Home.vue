@@ -24,7 +24,8 @@
             <p v-else class="placeholder">请选择组件</p>
           </el-tab-pane>
           <el-tab-pane label="事件" name="events">
-            <p class="placeholder">请选择组件</p>
+            <event-list v-if="curComponent" />
+            <p v-else class="placeholder">请选择组件</p>
           </el-tab-pane>
         </el-tabs>
       </section>
@@ -42,6 +43,7 @@ import { CANVAS_DATA, CANVAS_STYLE } from '@/constant';
 import generateID from '@/utils/generateID';
 import { listenGlobalKeyDown } from '@/utils/shortcutKey';
 import AnimationList from '@/views/AnimationList';
+import EventList from '@/views/EventList';
 
 export default {
   components: {
@@ -50,6 +52,7 @@ export default {
     Editor,
     AttrList,
     AnimationList,
+    EventList,
   },
   data() {
     return {

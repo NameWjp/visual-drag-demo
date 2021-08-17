@@ -8,6 +8,7 @@ import lock from './lock';
 import copy from './copy';
 import layer from './layer';
 import animation from './animation';
+import event from './event';
 
 export default createStore({
   modules: {
@@ -20,5 +21,6 @@ export default createStore({
     copy,
     layer,
     animation,
+    event,
   },
 });

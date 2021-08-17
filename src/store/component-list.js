@@ -6,6 +6,7 @@ export const commonStyle = {
 
 export const commonAttr = {
   animations: [], // 动画列表
+  events: {}, // 事件
   groupStyle: {}, // 当一个组件成为 Group 的子组件时使用
   isLock: false, // 是否锁定组件
 };
