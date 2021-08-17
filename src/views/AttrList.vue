@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       // 展示内容的组件
-      showContentComponents: ['v-text', 'rect-shape'],
+      showContentComponents: ['v-text', 'rect-shape', 'v-button'],
       // 颜色选择
       colorPickerKeys: ['borderColor', 'color', 'backgroundColor'],
       // 下拉选择框
