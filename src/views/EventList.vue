@@ -26,8 +26,8 @@
         :name="item.key"
       >
         <div class="event-content">
-          <el-input v-if="item.key == 'redirect'" v-model="item.param" type="textarea" placeholder="请输入完整的 URL" />
-          <el-input v-if="item.key == 'alert'" v-model="item.param" type="textarea" placeholder="请输入要 alert 的内容" />
+          <el-input @keydown.stop v-if="item.key == 'redirect'" v-model="item.param" type="textarea" placeholder="请输入完整的 URL" />
+          <el-input @keydown.stop v-if="item.key == 'alert'" v-model="item.param" type="textarea" placeholder="请输入要 alert 的内容" />
           <el-button style="margin-top: 20px;" @click="addEvent(item.key, item.param)">确定</el-button>
         </div>
       </el-tab-pane>
