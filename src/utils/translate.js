@@ -38,3 +38,8 @@ export function getCenterPoint(p1, p2) {
     y: (p1.y + p2.y) / 2,
   };
 }
+
+// 根据缩放比例求尺寸
+export function changeStyleWithScale(scale, value) {
+  return value * parseInt(scale, 10) / 100;
+}

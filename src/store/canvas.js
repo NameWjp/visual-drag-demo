@@ -5,6 +5,7 @@ const state = {
     scale: 100,
   },
   canvasEl: null,
+  canvasMode: 'edit', // 编辑器模式 edit 和 preview 两种
 };
 
 const getters = {};
@@ -15,6 +16,9 @@ const mutations = {
   },
   setCanvasEl(state, el) {
     state.canvasEl = el;
+  },
+  setCanvasMode(state, mode) {
+    state.canvasMode = mode;
   },
 };
 

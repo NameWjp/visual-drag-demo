@@ -3,7 +3,7 @@
     <el-button @click="undo">撤消</el-button>
     <el-button @click="redo">恢复</el-button>
     <label for="input" class="el-button el-button--default el-button--small">插入图片</label>
-    <el-button>预览</el-button>
+    <el-button @click="preview">预览</el-button>
     <el-button @click="save">保存</el-button>
     <el-button @click="clearComponents">清空画布</el-button>
     <el-button :disabled="!areaData.components.length" @click="compose">组合</el-button>
@@ -27,6 +27,9 @@
     </div>
   </div>
   <input ref="input" type="file" @change="handleFileChange" id="input" hidden />
+
+  <!-- 预览 -->
+  <preview v-model:show="isShowPreview" />
 </template>
 
 <script>
@@ -36,12 +39,15 @@ import { commonStyle, commonAttr } from '@/store/component-list';
 import generateID from '@/utils/generateID';
 import { CANVAS_DATA, CANVAS_STYLE } from '@/constant';
 import eventEmitter from '@/utils/eventEmitter';
+import Preview from '@/views/Editor/Preview';
 
 const needChangeStyle = ['top', 'left', 'width', 'height', 'fontSize', 'borderWidth'];
 
 export default {
   data() {
-    return {};
+    return {
+      isShowPreview: false,
+    };
   },
   computed: {
     ...mapState('canvas', [
@@ -61,6 +67,10 @@ export default {
     eventEmitter.on('save', this.save);
   },
   methods: {
+    preview() {
+      this.isShowPreview = true;
+      this.$store.commit('canvas/setCanvasMode', 'preview');
+    },
     undo() {
       this.$store.dispatch('snapshot/undo');
     },
@@ -169,7 +179,9 @@ export default {
       this.$store.dispatch('snapshot/recordSnapshot');
     },
   },
-  components: {},
+  components: {
+    Preview,
+  },
 };
 </script>
 

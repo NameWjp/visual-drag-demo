@@ -1,5 +1,5 @@
 <template>
-  <div class="v-text" @keydown="handleKeyDown">
+  <div v-if="canvasMode === 'edit'" class="v-text" @keydown="handleKeyDown">
     <div
       ref="text"
       :class="{ canEdit }"
@@ -12,10 +12,13 @@
       :style="{ verticalAlign: element.style.verticalAlign }"
     />
   </div>
+  <div v-else class="v-text preview">
+    <div v-html="element.propValue" :style="{ verticalAlign: element.style.verticalAlign }"></div>
+  </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapState } from 'vuex';
 import { ctrlCode, listenCodes } from '@/effect/shortcutKey';
 
 export default {
@@ -35,6 +38,9 @@ export default {
     };
   },
   computed: {
+    ...mapState('canvas', [
+      'canvasMode',
+    ]),
     ...mapGetters('component', [
       'curComponent',
     ]),
@@ -108,11 +114,13 @@ export default {
     element: {
       handler() {
         this.$nextTick(() => {
-          const dom = this.$refs.text;
-          const text = dom.innerHTML;
-          if (text !== this.element.propValue) {
-            dom.innerHTML = this.element.propValue;
-            this.adjustTextHeight();
+          if (this.canvasMode === 'edit') {
+            const dom = this.$refs.text;
+            const text = dom.innerHTML;
+            if (text !== this.element.propValue) {
+              dom.innerHTML = this.element.propValue;
+              this.adjustTextHeight();
+            }
           }
         });
       },
@@ -134,5 +142,8 @@ export default {
     display: table-cell;
     outline: none;
   }
+}
+.preview {
+  user-select: none;
 }
 </style>

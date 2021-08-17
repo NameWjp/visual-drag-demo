@@ -7,8 +7,8 @@
     ref="editor"
     class="editor"
     :style="{
-      width: `${changeStyleWithScale(canvasStyle.width)}px`,
-      height: `${changeStyleWithScale(canvasStyle.height)}px`
+      width: `${changeStyleWithScale(canvasStyle.scale, canvasStyle.width)}px`,
+      height: `${changeStyleWithScale(canvasStyle.scale, canvasStyle.height)}px`
     }"
   >
     <!-- 网格图案 -->
@@ -50,6 +50,7 @@ import componentList from '@/store/component-list';
 import { cloneDeep, throttle } from 'lodash-es';
 import generateID from '@/utils/generateID';
 import eventEmitter from '@/utils/eventEmitter';
+import { changeStyleWithScale } from '@/utils/translate';
 import Grid from './Grid';
 import Shape from './Shape';
 import MarkLine from './MarkLine';
@@ -96,6 +97,7 @@ export default {
     eventEmitter.on('hideContextMenu', this.hideContextMenu);
   },
   methods: {
+    changeStyleWithScale,
     handleContextMenu(e) {
       const canvasInfo = this.canvasEl.getBoundingClientRect();
       const left = e.clientX - canvasInfo.x;
@@ -109,9 +111,6 @@ export default {
     },
     hideContextMenu() {
       this.isShowMenuInfo = false;
-    },
-    changeStyleWithScale(value) {
-      return value * parseInt(this.canvasStyle.scale, 10) / 100;
     },
     handleMouseDown(e) {
       // 0 左击 1 滚轮 2 右击
