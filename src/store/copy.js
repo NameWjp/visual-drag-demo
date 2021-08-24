@@ -32,6 +32,12 @@ const actions = {
 
     const data = cloneDeep(state.copyData);
     data.id = generateID();
+    if (data.component === 'group') {
+      data.propValue.forEach(component => {
+        component.id = generateID();
+      });
+    }
+
     if (position) {
       data.style.left = position.left;
       data.style.top = position.top;
