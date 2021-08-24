@@ -250,9 +250,10 @@ export default {
       }
     },
     handleDrop(e) {
+      const canvasInfo = this.canvasEl.getBoundingClientRect();
       const component = cloneDeep(componentList[this.dragElement.dataset.index]);
-      component.style.left = e.offsetX;
-      component.style.top = e.offsetY;
+      component.style.left = e.clientX - canvasInfo.x;
+      component.style.top = e.clientY - canvasInfo.y;
       component.id = generateID();
       this.$store.commit('component/addComponent', { component });
       this.$store.dispatch('snapshot/recordSnapshot');
