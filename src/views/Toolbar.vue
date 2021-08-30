@@ -89,7 +89,7 @@ export default {
       this.$store.dispatch('snapshot/recordSnapshot');
     },
     clearComponents() {
-      this.$store.commit('component/setComponentList', []);
+      this.$store.dispatch('component/clearComponents');
       this.$store.dispatch('snapshot/recordSnapshot');
     },
     save() {

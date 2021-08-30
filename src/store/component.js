@@ -64,6 +64,10 @@ const actions = {
     commit('deleteComponentById', curComponent.id);
     commit('setCurComponentIndex', null);
   },
+  clearComponents({ commit }) {
+    commit('setComponentList', []);
+    commit('setCurComponentIndex', null);
+  },
 };
 
 export default {
